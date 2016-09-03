@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--Translation by iLLogical2007, DanielGroeger and everyone from https://github.com/DrKLO/Telegram/pull/129 whom I didn't notice -->
+
+<resources>
+    <string name="AppName">Telegram</string>
+    <string name="LanguageName">Deutsch</string>
+    <!--signin view-->
+    <!--code enter view-->
+    <!--signup view-->
+    <!--<string name="RegisterText">Set up your name and picture</string>-->
+    <!--chats view-->
+    <string name="Settings">Einstellungen</string>
+    <string name="Yesterday">gestern</string>
+    <string name="NoResult">Keine Ergebnisse</string>
+    <string name="Search">Suche</string>
+    <!--channels-->
+    <!--broadcasts-->
+    <!--audio view-->
+    <string name="AttachMusic">Musik</string>
+    <!--documents view-->
+    <!--chat view-->
+    <string name="Invisible">unsichtbar</string>
+    <string name="ShareFile">Teilen</string>
+    <string name="OpenInBrowser">ÖFFNEN MIT...</string>
+    <!--notification-->
+    <!--contacts view-->
+    <string name="TodayAt">um</string>
+    <string name="YesterdayAt">gestern um</string>
+    <string name="Online">online</string>
+    <string name="LastSeen">zul. online</string>
+    <string name="LastSeenDate">zul. online</string>
+    <string name="Lately">zuletzt kürzlich gesehen</string>
+    <string name="WithinAWeek">innerhalb einer Woche</string>
+    <string name="WithinAMonth">innerhalb eines Monats</string>
+    <string name="ALongTimeAgo">vor langer Zeit gesehen</string>
+    <!--group create view-->
+    <!--set admins view-->
+    <!--group info view-->
+    <string name="SETTINGS">Einstellungen</string>
+    <!--contact info view-->
+    <string name="MessageLifetime">Selbstzerstörungs-Timer</string>
+    <string name="ShortMessageLifetimeForever">Aus</string>
+    <string name="NumberUnknown">Unbekannt</string>
+    <string name="Info">Info</string>
+    <string name="Phone">Telefon</string>
+    <!--usernames-->
+    <string name="Username">Benutzername</string>
+    <string name="UsernameEmpty">Keiner</string>
+    <!--stickers view-->
+    <string name="Stickers">Sticker</string>
+    <!--settings view-->
+    <string name="TextSize">Textgröße für Nachrichten</string>
+    <string name="AskAQuestion">Eine Frage stellen</string>
+    <string name="EnableAnimations">Animationen aktivieren</string>
+    <string name="NotificationsAndSounds">Mitteilungen und Töne</string>
+    <string name="LogOut">Abmelden</string>
+    <string name="Default">Standard</string>
+    <string name="Support">Support</string>
+    <string name="ChatBackground">Chat-Hintergrundbild</string>
+    <string name="MessagesSettings">Nachrichten</string>
+    <string name="SendByEnter">Mit Enter senden</string>
+    <string name="Language">Sprache</string>
+    <string name="AskAQuestionInfo">Bedenke bitte, dass der Telegram Support von ehrenamtlichen Helfern betreut wird. Wir versuchen so schnell wie möglich zu antworten, dies kann jedoch manchmal ein bisschen dauern.<![CDATA[<br><br>]]>Bitte schau auch in den <![CDATA[<a href=\"https://telegram.org/faq/de\">Fragen und Antworten </a>]]> nach. Dort findest du Antworten auf die meisten Fragen und wichtige Tipps zur <![CDATA[<a href=\"https://telegram.org/faq/de#problembehandlung\">Problembehandlung</a>]]>.</string>
+    <string name="AskButton">Eine Frage stellen</string>
+    <string name="TelegramFaq">Fragen und Antworten</string>
+    <string name="PrivacyPolicy">Datenschutzerklärung</string>
+    <string name="DeleteLocalization">Lokalisierung löschen?</string>
+    <string name="SortBy">sortiert nach</string>
+    <string name="ImportContacts">Kontakte importieren</string>
+    <string name="SortFirstName">Vorname</string>
+    <string name="SortLastName">Nachname</string>
+    <string name="AutomaticMediaDownload">Automatischer Mediendownload</string>
+    <string name="WhenUsingMobileData">Über Mobilfunk</string>
+    <string name="WhenConnectedOnWiFi">Über W-LAN</string>
+    <string name="WhenRoaming">Bei Roaming</string>
+    <string name="NoMediaAutoDownload">kein automatischer Download</string>
+    <string name="AutoplayGifs">GIFs autom. Abspielen</string>
+    <string name="RaiseToSpeak">Zum Sprechen ans Ohr</string>
+    <string name="SaveToGallerySettings">In der Galerie speichern</string>
+    <string name="EditName">Name bearbeiten</string>
+    <string name="ChromeCustomTabs">In-App Browser</string>
+    <string name="ChromeCustomTabsInfo">Externe Links innerhalb der App öffnen</string>
+    <string name="DirectShare">Direktes Teilen</string>
+    <string name="DirectShareInfo">Letzte Chats im Teilen-Menü anzeigen</string>
+    <!--cache view-->
+    <string name="CacheSettings">Cache-Einstellungen</string>
+    <!--sessions view-->
+    <!--passcode view-->
+    <!--media view-->
+    <!--map view-->
+    <!--photo gallery view-->
+    <string name="ShowAllMedia">Zeige alle Medien</string>
+    <string name="SaveToGallery">In der Galerie speichern</string>
+    <string name="Of">%1$d von %2$d</string>
+    <string name="Gallery">Galerie</string>
+    <string name="NoPhotos">Noch keine Bilder</string>
+    <string name="NoVideo">Noch keine Videos</string>
+    <string name="PleaseDownload">Medien bitte zuerst herunterladen</string>
+    <string name="NoRecentPhotos">Suchverlauf</string>
+    <string name="NoRecentGIFs">Suchverlauf</string>
+    <string name="SearchImages">BILDERSUCHE</string>
+    <string name="SearchImagesInfo">BILDERSUCHE</string>
+    <string name="SearchGifs">GIF-SUCHE</string>
+    <string name="CropImage">Bild zuschneiden</string>
+    <string name="Enhance">Verbessern</string>
+    <string name="Highlights">Lichter</string>
+    <string name="Contrast">Kontrast</string>
+    <string name="Exposure">Belichtung</string>
+    <string name="Warmth">Wärme</string>
+    <string name="Saturation">Sättigung</string>
+    <string name="Vignette">Vignette</string>
+    <string name="Shadows">Schatten</string>
+    <string name="Grain">Körnung</string>
+    <string name="Sharpen">Schärfe</string>
+    <string name="Fade">Verblassen</string>
+    <string name="Tint">Tönung</string>
+    <string name="TintShadows">TIEFEN</string>
+    <string name="TintHighlights">LICHTER</string>
+    <string name="Curves">Kurven</string>
+    <string name="CurvesAll">ALLE</string>
+    <string name="CurvesRed">ROT</string>
+    <string name="CurvesGreen">GRÜN</string>
+    <string name="CurvesBlue">BLAU</string>
+    <string name="Blur">Unschärfe</string>
+    <string name="BlurOff">Aus</string>
+    <string name="BlurLinear">Linear</string>
+    <string name="BlurRadial">Radial</string>
+    <string name="AreYouSureDeletePhoto">Möchtest du wirklich dieses Bild löschen?</string>
+    <string name="DiscardChanges">Änderungen verwerfen?</string>
+    <string name="ClearSearch">Suchverlauf löschen?</string>
+    <string name="ClearButton">Löschen</string>
+    <string name="PickerPhotos">Bilder</string>
+    <string name="PickerVideo">Video</string>
+    <string name="AddCaption">Beschriftung...</string>
+    <string name="PhotoCaption">Bildbeschriftung</string>
+    <!--password view-->
+    <!--privacy settings-->
+    <string name="PrivacySettings">Privatsphäre und Sicherheit</string>
+    <!--edit video view-->
+    <!--bot-->
+    <!--button titles-->
+    <string name="Done">Fertig</string>
+    <string name="Save">Speichern</string>
+    <string name="Cancel">Abbrechen</string>
+    <string name="Edit">Bearbeiten</string>
+    <string name="Send">Senden</string>
+    <string name="Delete">Löschen</string>
+    <string name="Set">Wählen</string>
+    <string name="OK">OK</string>
+    <string name="Crop">SCHNEIDEN</string>
+    <!--messages-->
+    <string name="AttachPhoto">Bild</string>
+    <string name="AttachVideo">Video</string>
+    <string name="AttachGif">GIF</string>
+    <string name="AttachDocument">Datei</string>
+    <string name="AttachAudio">Sprachnachricht</string>
+    <!--Alert messages-->
+    <string name="Loading">Lädt…</string>
+    <string name="AreYouSure">Bist du sicher?</string>
+    <string name="AreYouSureLogout">Wirklich abmelden?\n\nDu kannst Telegram von all deinen Geräten gleichzeitig nutzen.\n\nWichtig: Abmelden löscht deine Geheimen Chats.</string>
+    <!--permissions-->
+    <!--Intro view-->
+    <string name="Page1Title">Telegram</string>
+    <string name="Page2Title">Schnell</string>
+    <string name="Page3Title">Kostenlos</string>
+    <string name="Page4Title">Sicher</string>
+    <string name="Page5Title">Leistungsstark</string>
+    <string name="Page6Title">Cloud-Basiert</string>
+    <string name="Page7Title">Vertraulich</string>
+    <string name="Page1Message">Die <![CDATA[<b>schnellste</b>]]> Messaging App der Welt.<![CDATA[<br/><b>Kostenlos</b>]]> und <![CDATA[<b>sicher</b>]]>.</string>
+    <string name="Page2Message"><![CDATA[<b>Telegram</b>]]> stellt Nachrichten schneller<![CDATA[<br/>]]>zu als andere Anwendungen.</string>
+    <string name="Page3Message"><![CDATA[<b>Telegram</b>]]> ist für immer kostenlos.<![CDATA[<br/>]]>Keine Werbung. Keine Abo-Gebühr.</string>
+    <string name="Page4Message"><![CDATA[<b>Telegram</b>]]> schützt deine Nachrichten <![CDATA[<br/>]]>vor Hacker-Angriffen.</string>
+    <string name="Page5Message"><![CDATA[<b>Telegram</b>]]> unterstützt unbegrenzt große <![CDATA[<br/>]]>Chats und Mediendateien.</string>
+    <string name="Page6Message"><![CDATA[<b>Telegram</b>]]> lässt sich von verschiedenen Geräten<![CDATA[<br/>]]>gleichzeitig nutzen.</string>
+    <string name="Page7Message"><![CDATA[<b>Telegram</b>]]>-Nachrichten sind stark verschlüsselt<![CDATA[<br/>]]>und können sich selbst zerstören.</string>
+    <string name="StartMessaging">Jetzt beginnen</string>
+    <!--plural-->
+    <!--forwarded messages-->
+    <!--date formatters-->
+    <string name="formatterMonthYear">MMMM yyyy</string>
+    <string name="formatterMonth">dd MMM</string>
+    <string name="formatterYear">dd.MM.yy</string>
+    <string name="formatterYearMax">dd.MM.yyyy</string>
+    <string name="chatDate">d MMMM</string>
+    <string name="chatFullDate">d MMMM, yyyy</string>
+    <string name="formatterWeek">EEE</string>
+    <string name="formatterDay24H">HH:mm</string>
+    <string name="formatterDay12H">h:mm a</string>
+    <string name="formatDateAtTime">%1$s um %2$s</string>
+</resources>

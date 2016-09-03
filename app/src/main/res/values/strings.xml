@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<resources>
+    <string name="AppName">Picca</string>
+    <string name="LanguageName">English</string>
+    <!--signin view-->
+    <!--code enter view-->
+    <!--signup view-->
+    <!--<string name="RegisterText">Set up your name and picture</string>-->
+    <!--chats view-->
+    <string name="Settings">Settings</string>
+    <string name="Yesterday">yesterday</string>
+    <string name="NoResult">No results</string>
+    <string name="Search">Search</string>
+    <!--channels-->
+    <!--broadcasts-->
+    <!--audio view-->
+    <string name="AttachMusic">Music</string>
+    <!--documents view-->
+    <!--chat view-->
+    <string name="Invisible">invisible</string>
+    <string name="ShareFile">Share</string>
+    <string name="OpenInBrowser">OPEN IN...</string>
+    <!--notification-->
+    <!--contacts view-->
+    <string name="TodayAt">at</string>
+    <string name="YesterdayAt">yesterday at</string>
+    <string name="Online">online</string>
+    <string name="LastSeen">last seen</string>
+    <string name="LastSeenDate">last seen</string>
+    <string name="Lately">last seen recently</string>
+    <string name="WithinAWeek">last seen within a week</string>
+    <string name="WithinAMonth">last seen within a month</string>
+    <string name="ALongTimeAgo">last seen a long time ago</string>
+    <!--group create view-->
+    <!--set admins view-->
+    <!--group info view-->
+    <string name="SETTINGS">Settings</string>
+    <!--contact info view-->
+    <string name="MessageLifetime">Self-Destruct Timer</string>
+    <string name="ShortMessageLifetimeForever">Off</string>
+    <string name="NumberUnknown">Unknown</string>
+    <string name="Info">Info</string>
+    <string name="Phone">Phone</string>
+    <!--usernames-->
+    <string name="Username">Username</string>
+    <string name="UsernameEmpty">None</string>
+    <!--stickers view-->
+    <string name="Stickers">Stickers</string>
+    <!--settings view-->
+    <string name="TextSize">Messages Text Size</string>
+    <string name="AskAQuestion">Ask a Question</string>
+    <string name="EnableAnimations">Enable Animations</string>
+    <string name="NotificationsAndSounds">Notifications and Sounds</string>
+    <string name="LogOut">Log out</string>
+    <string name="Default">Default</string>
+    <string name="Support">Support</string>
+    <string name="ChatBackground">Chat Background</string>
+    <string name="MessagesSettings">Messages</string>
+    <string name="SendByEnter">Send by Enter</string>
+    <string name="Language">Language</string>
+    <string name="AskAQuestionInfo">Please note that Telegram Support is done by volunteers. We try to respond as quickly as possible, but it may take a while.<![CDATA[<br><br>]]>Please take a look at the <![CDATA[<a href=\"https://telegram.org/faq#general\">Telegram FAQ</a>]]>: it has answers to most questions and important tips for <![CDATA[<a href=\"https://telegram.org/faq#troubleshooting\">troubleshooting</a>]]>.</string>
+    <string name="AskButton">Ask a volunteer</string>
+    <string name="TelegramFaq">Telegram FAQ</string>
+    <string name="PrivacyPolicy">Privacy Policy</string>
+    <string name="DeleteLocalization">Delete localization?</string>
+    <string name="SortBy">Sort By</string>
+    <string name="ImportContacts">Import Contacts</string>
+    <string name="SortFirstName">First name</string>
+    <string name="SortLastName">Last name</string>
+    <string name="AutomaticMediaDownload">Automatic media download</string>
+    <string name="WhenUsingMobileData">When using mobile data</string>
+    <string name="WhenConnectedOnWiFi">When connected on Wi-Fi</string>
+    <string name="WhenRoaming">When roaming</string>
+    <string name="NoMediaAutoDownload">No media</string>
+    <string name="AutoplayGifs">Autoplay GIFs</string>
+    <string name="RaiseToSpeak">Raise to Speak</string>
+    <string name="SaveToGallerySettings">Save to gallery</string>
+    <string name="EditName">Edit name</string>
+    <string name="ChromeCustomTabs">In-App Browser</string>
+    <string name="ChromeCustomTabsInfo">Open external links within the app</string>
+    <string name="DirectShare">Direct Share</string>
+    <string name="DirectShareInfo">Show recent chats in share menu</string>
+    <!--cache view-->
+    <string name="CacheSettings">Cache Settings</string>
+    <!--sessions view-->
+    <!--passcode view-->
+    <!--media view-->
+    <!--map view-->
+    <!--photo gallery view-->
+    <string name="ShowAllMedia">Show all media</string>
+    <string name="SaveToGallery">Save to gallery</string>
+    <string name="Of">%1$d of %2$d</string>
+    <string name="Gallery">Gallery</string>
+    <string name="NoPhotos">No photos yet</string>
+    <string name="NoVideo">No videos yet</string>
+    <string name="PleaseDownload">Please download media first</string>
+    <string name="NoRecentPhotos">No recent photos</string>
+    <string name="NoRecentGIFs">No recent GIFs</string>
+    <string name="SearchImages">FIND IMAGES</string>
+    <string name="SearchImagesInfo">WEB SEARCH</string>
+    <string name="SearchGifs">FIND GIFS</string>
+    <string name="CropImage">Crop image</string>
+    <string name="Enhance">Enhance</string>
+    <string name="Highlights">Highlights</string>
+    <string name="Contrast">Contrast</string>
+    <string name="Exposure">Exposure</string>
+    <string name="Warmth">Warmth</string>
+    <string name="Saturation">Saturation</string>
+    <string name="Vignette">Vignette</string>
+    <string name="Shadows">Shadows</string>
+    <string name="Grain">Grain</string>
+    <string name="Sharpen">Sharpen</string>
+    <string name="Fade">Fade</string>
+    <string name="Tint">Tint</string>
+    <string name="TintShadows">SHADOWS</string>
+    <string name="TintHighlights">HIGHLIGHTS</string>
+    <string name="Curves">Curves</string>
+    <string name="CurvesAll">ALL</string>
+    <string name="CurvesRed">RED</string>
+    <string name="CurvesGreen">GREEN</string>
+    <string name="CurvesBlue">BLUE</string>
+    <string name="Blur">Blur</string>
+    <string name="BlurOff">Off</string>
+    <string name="BlurLinear">Linear</string>
+    <string name="BlurRadial">Radial</string>
+    <string name="AreYouSureDeletePhoto">Are you sure you want to delete this photo?</string>
+    <string name="DiscardChanges">Discard changes?</string>
+    <string name="ClearSearch">Clear search history?</string>
+    <string name="ClearButton">Clear</string>
+    <string name="PickerPhotos">Photos</string>
+    <string name="PickerVideo">Video</string>
+    <string name="AddCaption">Add a caption...</string>
+    <string name="PhotoCaption">Photo Caption</string>
+    <!--password view-->
+    <!--privacy settings-->
+    <string name="PrivacySettings">Privacy and Security</string>
+    <!--edit video view-->
+    <!--bot-->
+    <!--button titles-->
+    <string name="Done">Done</string>
+    <string name="Save">Save</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Edit">Edit</string>
+    <string name="Send">Send</string>
+    <string name="Delete">Delete</string>
+    <string name="Set">Set</string>
+    <string name="OK">OK</string>
+    <string name="Crop">CROP</string>
+    <!--messages-->
+    <string name="AttachPhoto">Photo</string>
+    <string name="AttachVideo">Video</string>
+    <string name="AttachGif">GIF</string>
+    <string name="AttachDocument">File</string>
+    <string name="AttachAudio">Voice message</string>
+    <!--Alert messages-->
+    <string name="Loading">Loading...</string>
+    <string name="AreYouSure">Are you sure?</string>
+    <string name="AreYouSureLogout">Are you sure you want to log out?\n\nNote that you can seamlessly use Telegram on all your devices at once.\n\nRemember, logging out kills all your Secret Chats.</string>
+    <string name="AreYouSureDeleteAlbum">Are you sure you want to delete selected albums with images?</string>
+    <string name="AreYouSureDeletePhotos">Are you sure you want to delete selected photos?</string>
+    <!--permissions-->
+    <!--Intro view-->
+    <string name="Page1Title">Telegram</string>
+    <string name="Page2Title">Fast</string>
+    <string name="Page3Title">Free</string>
+    <string name="Page4Title">Secure</string>
+    <string name="Page5Title">Powerful</string>
+    <string name="Page6Title">Cloud-Based</string>
+    <string name="Page7Title">Private</string>
+    <string name="Page1Message">The world\'s <![CDATA[<b>fastest</b>]]> messaging app.<![CDATA[<br/>]]>It is <![CDATA[<b>free</b>]]> and <![CDATA[<b>secure</b>]]>.</string>
+    <string name="Page2Message"><![CDATA[<b>Telegram</b>]]> delivers messages faster than<![CDATA[<br/>]]>any other application.</string>
+    <string name="Page3Message"><![CDATA[<b>Telegram</b>]]> is free forever. No ads.<![CDATA[<br/>]]>No subscription fees.</string>
+    <string name="Page4Message"><![CDATA[<b>Telegram</b>]]> keeps your messages safe<![CDATA[<br/>]]>from hacker attacks.</string>
+    <string name="Page5Message"><![CDATA[<b>Telegram</b>]]> has no limits on the size of<![CDATA[<br/>]]>your media and chats.</string>
+    <string name="Page6Message"><![CDATA[<b>Telegram</b>]]> lets you access your messages<![CDATA[<br/>]]>from multiple devices.</string>
+    <string name="Page7Message"><![CDATA[<b>Telegram</b>]]> messages are heavily encrypted<![CDATA[<br/>]]>and can self-destruct.</string>
+    <string name="StartMessaging">Start Messaging</string>
+    <!--plural-->
+    <!--forwarded messages-->
+    <!--date formatters-->
+    <string name="formatterMonthYear">MMMM yyyy</string>
+    <string name="formatterMonth">MMM dd</string>
+    <string name="formatterYear">dd.MM.yy</string>
+    <string name="formatterYearMax">dd.MM.yyyy</string>
+    <string name="chatDate">MMMM d</string>
+    <string name="chatFullDate">MMMM d, yyyy</string>
+    <string name="formatterWeek">EEE</string>
+    <string name="formatterDay24H">HH:mm</string>
+    <string name="formatterDay12H">h:mm a</string>
+    <string name="formatDateAtTime">%1$s at %2$s</string>
+</resources>
