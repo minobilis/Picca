@@ -21,7 +21,7 @@ import com.roshin.Picca.R;
 import com.roshin.ui.Cells.DrawerActionCell;
 import com.roshin.ui.Cells.DividerCell;
 import com.roshin.ui.Cells.EmptyCell;
-import com.roshin.ui.Cells.DrawerProfileCell;
+import com.roshin.ui.Cells.DrawerTopCell;
 
 public class DrawerLayoutAdapter extends BaseAdapter {
 
@@ -66,7 +66,7 @@ public class DrawerLayoutAdapter extends BaseAdapter {
         int type = getItemViewType(i);
         if (type == 0) {
             if (view == null) {
-                view = new DrawerProfileCell(mContext);
+                view = new DrawerTopCell(mContext);
             }
         } else if (type == 1) {
             if (view == null) {
@@ -84,6 +84,8 @@ public class DrawerLayoutAdapter extends BaseAdapter {
 
             if (i == 2) {
                 actionCell.setTextAndIcon(LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings);
+            } else if (i == 3) {
+                actionCell.setTextAndIcon(LocaleController.getString("PiccaFaq", R.string.PiccaFaq), R.drawable.menu_help);
             }
 
             /*if (i == 2) {

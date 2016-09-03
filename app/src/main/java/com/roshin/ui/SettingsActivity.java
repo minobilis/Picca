@@ -513,7 +513,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                     BottomSheet.BottomSheetCell cell = new BottomSheet.BottomSheetCell(getParentActivity(), 1);
                     cell.setBackgroundResource(R.drawable.list_selector);
                     cell.setTextAndIcon(LocaleController.getString("Save", R.string.Save).toUpperCase(), 0);
-                    cell.setTextColor(Theme.AUTODOWNLOAD_SHEET_SAVE_TEXT_COLOR);
+                    cell.setTextColor(Theme.ACTION_BAR_COLOR);
                     cell.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1082,7 +1082,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 } else if (i == switchBackendButtonRow) {
                     textCell.setText("Switch Backend", true);
                 } else if (i == telegramFaqRow) {
-                    textCell.setText(LocaleController.getString("TelegramFAQ", R.string.TelegramFaq), true);
+                    textCell.setText(LocaleController.getString("PiccaFAQ", R.string.PiccaFaq), true);
                 } else if (i == contactsReimportRow) {
                     textCell.setText(LocaleController.getString("ImportContacts", R.string.ImportContacts), true);
                 } else if (i == stickersRow) {

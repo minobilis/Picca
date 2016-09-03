@@ -50,35 +50,13 @@ import java.util.ArrayList;
 public class LaunchActivity extends Activity implements ActionBarLayout.ActionBarLayoutDelegate, NotificationCenter.NotificationCenterDelegate {
 
     private boolean finished;
-    private String videoPath;
-    private String sendingText;
-    private ArrayList<Uri> photoPathsArray;
-    private ArrayList<String> documentsPathsArray;
-    private ArrayList<Uri> documentsUrisArray;
-    private String documentsMimeType;
-    private ArrayList<String> documentsOriginalPathsArray;
-    private ArrayList<TLRPC.User> contactsToSend;
-    private int currentConnectionState;
     private static ArrayList<BaseFragment> mainFragmentsStack = new ArrayList<>();
-    private static ArrayList<BaseFragment> layerFragmentsStack = new ArrayList<>();
-    private static ArrayList<BaseFragment> rightFragmentsStack = new ArrayList<>();
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
 
     private ActionBarLayout actionBarLayout;
-    private ActionBarLayout layersActionBarLayout;
-    private ActionBarLayout rightActionBarLayout;
-    private FrameLayout shadowTablet;
-    private FrameLayout shadowTabletSide;
-    private ImageView backgroundTablet;
     protected DrawerLayoutContainer drawerLayoutContainer;
     private DrawerLayoutAdapter drawerLayoutAdapter;
     private AlertDialog visibleDialog;
-
-    private Intent passcodeSaveIntent;
-    private boolean passcodeSaveIntentIsNew;
-    private boolean passcodeSaveIntentIsRestore;
-
-    private boolean tabletFullSize;
 
     private Runnable lockRunnable;
 
@@ -188,14 +166,6 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.didUpdatedConnectionState);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.needShowAlert);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.wasUnableToFindCurrentLocation);
-    }
-
-    public void presentFragment(BaseFragment fragment) {
-        actionBarLayout.presentFragment(fragment);
-    }
-
-    public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation) {
-        return actionBarLayout.presentFragment(fragment, removeLast, forceWithoutAnimation, true);
     }
 
     public void fixLayout() {

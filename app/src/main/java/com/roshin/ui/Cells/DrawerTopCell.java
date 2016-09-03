@@ -31,14 +31,14 @@ import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLog;
 
 import com.roshin.Picca.R;
-import com.roshin.tgnet.TLRPC;
+import com.roshin.tgnet.TLObject;
 import com.roshin.ui.Components.BackupImageView;
 import com.roshin.ui.Components.LayoutHelper;
 import com.roshin.ui.ActionBar.Theme;
 
-public class DrawerProfileCell extends FrameLayout {
+public class DrawerTopCell extends FrameLayout {
 
-    private BackupImageView avatarImageView;
+    private BackupImageView coverImageView;
     private TextView nameTextView;
     private TextView phoneTextView;
     private ImageView shadowView;
@@ -47,7 +47,7 @@ public class DrawerProfileCell extends FrameLayout {
     private Paint paint = new Paint();
     private int currentColor;
 
-    public DrawerProfileCell(Context context) {
+    public DrawerTopCell(Context context) {
         super(context);
         setBackgroundColor(Theme.ACTION_BAR_PROFILE_COLOR);
 
@@ -57,19 +57,20 @@ public class DrawerProfileCell extends FrameLayout {
         shadowView.setImageResource(R.drawable.bottom_shadow);
         addView(shadowView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 70, Gravity.LEFT | Gravity.BOTTOM));
 
-        avatarImageView = new BackupImageView(context);
-        avatarImageView.getImageReceiver().setRoundRadius(AndroidUtilities.dp(32));
-        addView(avatarImageView, LayoutHelper.createFrame(64, 64, Gravity.LEFT | Gravity.BOTTOM, 16, 0, 0, 67));
+        coverImageView = new BackupImageView(context);
+        coverImageView.setImage(new TLObject(), null, getContext().getResources().getDrawable(R.drawable.profile));
+        addView(coverImageView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.LEFT | Gravity.BOTTOM, 0, 0, 0, 0));
 
         nameTextView = new TextView(context);
         nameTextView.setTextColor(0xffffffff);
-        nameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+        nameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         nameTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         nameTextView.setLines(1);
         nameTextView.setMaxLines(1);
         nameTextView.setSingleLine(true);
         nameTextView.setGravity(Gravity.LEFT);
         nameTextView.setEllipsize(TextUtils.TruncateAt.END);
+        nameTextView.setText(getContext().getResources().getString(R.string.AppName));
         addView(nameTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.BOTTOM, 16, 0, 16, 28));
 
         phoneTextView = new TextView(context);
@@ -129,16 +130,5 @@ public class DrawerProfileCell extends FrameLayout {
             phoneTextView.setTextColor(0xffc2e5ff);
             super.onDraw(canvas);
         }
-    }
-
-    public void setUser(TLRPC.User user) {
-        if (user == null) {
-            return;
-        }
-        TLRPC.FileLocation photo = null;
-        if (user.photo != null) {
-            photo = user.photo.photo_small;
-        }
-        nameTextView.setText("");
     }
 }

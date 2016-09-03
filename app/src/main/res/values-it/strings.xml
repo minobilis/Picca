@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--https://www.transifex.com/projects/p/telegram/language/it/members/-->
+<!--https://www.transifex.com/projects/p/Picca/language/it/members/-->
 
 <resources>
-    <string name="AppName">Telegram</string>
+    <string name="AppName">Picca</string>
     <string name="LanguageName">Italiano</string>
     <!--signin view-->
     <!--code enter view-->
@@ -61,9 +61,9 @@
     <string name="MessagesSettings">Messaggi</string>
     <string name="SendByEnter">Invia con tasto invio</string>
     <string name="Language">Lingua</string>
-    <string name="AskAQuestionInfo">Nota che il supporto di Telegram è fornito da volontari. Proviamo a rispondere quanto prima, ma potrebbe volerci del tempo.<![CDATA[<br><br>]]>Dai un\'occhiata alle <![CDATA[<a href=\"https://telegram.org/faq/it#domande-generali\">Domande frequenti di Telegram</a>]]>: contengono risposte a quasi tutte le domande e suggerimenti importanti per <![CDATA[<a href=\"https://telegram.org/faq/it#risoluzione-dei-problemi\">risolvere i  problemi</a>]]>.</string>
+    <string name="AskAQuestionInfo">Nota che il supporto di Picca è fornito da volontari. Proviamo a rispondere quanto prima, ma potrebbe volerci del tempo.<![CDATA[<br><br>]]>Dai un\'occhiata alle <![CDATA[<a href=\"https://Picca.org/faq/it#domande-generali\">Domande frequenti di Picca</a>]]>: contengono risposte a quasi tutte le domande e suggerimenti importanti per <![CDATA[<a href=\"https://Picca.org/faq/it#risoluzione-dei-problemi\">risolvere i  problemi</a>]]>.</string>
     <string name="AskButton">Chiedi a un volontario</string>
-    <string name="TelegramFaq">Domande frequenti</string>
+    <string name="PiccaFaq">Domande frequenti</string>
     <string name="PrivacyPolicy">Informativa sulla privacy</string>
     <string name="DeleteLocalization">Eliminare la traduzione?</string>
     <string name="SortBy">Ordina per</string>
@@ -158,10 +158,10 @@
     <!--Alert messages-->
     <string name="Loading">Caricamento…</string>
     <string name="AreYouSure">Sei sicuro?</string>
-    <string name="AreYouSureLogout">Sei sicuro di voler uscire?\n\nNota che puoi usare Telegram su tutti i tuoi dispositivi contemporaneamente.\n\nRicorda, uscendo eliminerai tutte le Chat Segrete.</string>
+    <string name="AreYouSureLogout">Sei sicuro di voler uscire?\n\nNota che puoi usare Picca su tutti i tuoi dispositivi contemporaneamente.\n\nRicorda, uscendo eliminerai tutte le Chat Segrete.</string>
     <!--permissions-->
     <!--Intro view-->
-    <string name="Page1Title">Telegram</string>
+    <string name="Page1Title">Picca</string>
     <string name="Page2Title">Veloce</string>
     <string name="Page3Title">Gratuito</string>
     <string name="Page4Title">Sicuro</string>
@@ -169,12 +169,12 @@
     <string name="Page6Title">Basato sul cloud</string>
     <string name="Page7Title">Privato</string>
     <string name="Page1Message">L\'app di messaggi <![CDATA[<b>più veloce</b>]]> al mondo.<![CDATA[<br/>]]>È <![CDATA[<b>gratuita</b>]]> e <![CDATA[<b>sicura</b>]]>.</string>
-    <string name="Page2Message"><![CDATA[<b>Telegram</b>]]> consegna i messaggi più<![CDATA[<br/>]]>velocemente di qualsiasi altra app.</string>
-    <string name="Page3Message"><![CDATA[<b>Telegram</b>]]> sarà sempre gratuito.<![CDATA[<br/>]]>Nessuna pubblicità. Nessun abbonamento.</string>
-    <string name="Page4Message"><![CDATA[<b>Telegram</b>]]> protegge i tuoi messaggi<![CDATA[<br/>]]>dagli attacchi degli hacker.</string>
-    <string name="Page5Message"><![CDATA[<b>Telegram</b>]]> non ha limiti di dimensione<![CDATA[<br/>]]>per le tue chat e i file multimediali.</string>
-    <string name="Page6Message"><![CDATA[<b>Telegram</b>]]> ti consente di accedere<![CDATA[<br/>]]>ai tuoi messaggi da più dispositivi.</string>
-    <string name="Page7Message">I messaggi di <![CDATA[<b>Telegram</b>]]> sono fortemente<![CDATA[<br/>]]>criptati e possono autodistruggersi.</string>
+    <string name="Page2Message"><![CDATA[<b>Picca</b>]]> consegna i messaggi più<![CDATA[<br/>]]>velocemente di qualsiasi altra app.</string>
+    <string name="Page3Message"><![CDATA[<b>Picca</b>]]> sarà sempre gratuito.<![CDATA[<br/>]]>Nessuna pubblicità. Nessun abbonamento.</string>
+    <string name="Page4Message"><![CDATA[<b>Picca</b>]]> protegge i tuoi messaggi<![CDATA[<br/>]]>dagli attacchi degli hacker.</string>
+    <string name="Page5Message"><![CDATA[<b>Picca</b>]]> non ha limiti di dimensione<![CDATA[<br/>]]>per le tue chat e i file multimediali.</string>
+    <string name="Page6Message"><![CDATA[<b>Picca</b>]]> ti consente di accedere<![CDATA[<br/>]]>ai tuoi messaggi da più dispositivi.</string>
+    <string name="Page7Message">I messaggi di <![CDATA[<b>Picca</b>]]> sono fortemente<![CDATA[<br/>]]>criptati e possono autodistruggersi.</string>
     <string name="StartMessaging">Inizia a chattare</string>
     <!--plural-->
     <!--forwarded messages-->

@@ -145,7 +145,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private ImageView videoPlayButton;
     private TextView videoPlayerTime;
     private SeekBar videoPlayerSeekbar;
-    private boolean playerNeedsPrepare;
     private boolean textureUploaded;
     private boolean videoCrossfadeStarted;
     private float videoCrossfadeAlpha;
@@ -154,10 +153,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
     private float animationValues[][] = new float[2][8];
 
-    private BaseFragment parentChatActivity;
     private RecyclerListView mentionListView;
     private LinearLayoutManager mentionLayoutManager;
-    private AnimatorSet mentionListAnimation;
     private boolean allowMentions;
 
     private int animationInProgress = 0;
@@ -201,7 +198,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private float animateToY;
     private float animateToScale;
     private float animationValue;
-    private int currentRotation;
     private long animationStartTime;
     private AnimatorSet imageMoveAnimation;
     private AnimatorSet changeModeAnimation;
@@ -2421,17 +2417,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
     }
 
-    public boolean isShowingImage(TLRPC.FileLocation object) {
-        return isVisible && !disableShowCheck && object != null && currentFileLocation != null && object.local_id == currentFileLocation.local_id && object.volume_id == currentFileLocation.volume_id && object.dc_id == currentFileLocation.dc_id;
-    }
-
     public boolean isShowingImage(String object) {
         return isVisible && !disableShowCheck && object != null && currentPathObject != null && object.equals(currentPathObject);
     }
 
-    public void openPhoto(final TLRPC.FileLocation fileLocation, final PhotoViewerProvider provider) {
-        openPhoto(null, fileLocation, null, null, 0, provider, null, 0, 0);
-    }
 
     public void openPhotoForSelect(final ArrayList<Object> photos, final int index, int type, final PhotoViewerProvider provider, BaseFragment chatActivity) {
         sendPhotoType = type;
@@ -2484,8 +2473,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             FileLog.e("picca", e);
             return;
         }
-
-        parentChatActivity = chatActivity;
 
         actionBar.setTitle(LocaleController.formatString("Of", R.string.Of, 1, 1));
         NotificationCenter.getInstance().addObserver(this, NotificationCenter.FileDidFailedLoad);
@@ -2708,7 +2695,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
 
         captionEditText.onDestroy();
-        parentChatActivity = null;
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.FileDidFailedLoad);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.FileDidLoaded);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.FileLoadProgressChanged);

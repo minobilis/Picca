@@ -61,9 +61,9 @@
     <string name="MessagesSettings">الرسائل</string>
     <string name="SendByEnter">أرسل بزر الإدخال</string>
     <string name="Language">اللغة</string>
-    <string name="AskAQuestionInfo">نرجو الأخذ بالعلم أن الدعم الفني في تيليجرام يقوم به مجموعة من المتطوعين. نحن نحاول الرد بسرعة قدر المستطاع، لكن ربما نستغرق القليل من الوقت.<![CDATA[<br><br>]]> <![CDATA[<a href=\"https://telegram.org/faq/ar\">صفحة الأسئلة الأكثر شيوعًا</a>]]>: يوجد بها حلول للمشاكل وإجابات لمعظم الأسئلة.</string>
+    <string name="AskAQuestionInfo">نرجو الأخذ بالعلم أن الدعم الفني في تيليجرام يقوم به مجموعة من المتطوعين. نحن نحاول الرد بسرعة قدر المستطاع، لكن ربما نستغرق القليل من الوقت.<![CDATA[<br><br>]]> <![CDATA[<a href=\"https://Picca.org/faq/ar\">صفحة الأسئلة الأكثر شيوعًا</a>]]>: يوجد بها حلول للمشاكل وإجابات لمعظم الأسئلة.</string>
     <string name="AskButton">اسأل أحد المتطوعين</string>
-    <string name="TelegramFaq">الأسئلة الشائعة عن تيليجرام</string>
+    <string name="PiccaFaq">الأسئلة الشائعة عن تيليجرام</string>
     <string name="PrivacyPolicy">سياسة الخصوصية</string>
     <string name="DeleteLocalization">حذف التعريب؟</string>
     <string name="SortBy">فرز حسب</string>

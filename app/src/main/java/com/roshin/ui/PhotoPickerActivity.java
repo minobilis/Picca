@@ -745,10 +745,6 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
                     continue;
                 }
             }
-            if (num == index) {
-                cell.checkBox.setVisibility(View.VISIBLE);
-                break;
-            }
         }
     }
 
