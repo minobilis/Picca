@@ -51,6 +51,7 @@
     <string name="Stickers">Stickers</string>
     <!--settings view-->
     <string name="TextSize">Messages Text Size</string>
+    <string name="AlbumCaptionTextSize">Album\'s Caption Text Size</string>
     <string name="AskAQuestion">Ask a Question</string>
     <string name="EnableAnimations">Enable Animations</string>
     <string name="NotificationsAndSounds">Notifications and Sounds</string>
@@ -94,6 +95,7 @@
     <string name="SaveToGallery">Save to gallery</string>
     <string name="Of">%1$d of %2$d</string>
     <string name="Gallery">Gallery</string>
+    <string name="Albums">Albums</string>
     <string name="NoPhotos">No photos yet</string>
     <string name="NoVideo">No videos yet</string>
     <string name="PleaseDownload">Please download media first</string>

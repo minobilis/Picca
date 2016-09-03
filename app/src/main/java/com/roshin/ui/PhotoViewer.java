@@ -52,37 +52,36 @@ import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.ImageLoader;
-import com.roshin.gallery.query.SharedMediaQuery;
+import com.roshin.gallery.AnimatorListenerAdapterProxy;
 import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLoader;
 import com.roshin.gallery.FileLog;
+import com.roshin.gallery.ImageLoader;
+import com.roshin.gallery.ImageReceiver;
 import com.roshin.gallery.LocaleController;
 import com.roshin.gallery.MediaController;
 import com.roshin.gallery.NotificationCenter;
-
-import com.roshin.gallery.support.widget.LinearLayoutManager;
-import com.roshin.Picca.R;
-import com.roshin.tgnet.ConnectionsManager;
-import com.roshin.tgnet.TLRPC;
 import com.roshin.gallery.UserConfig;
 import com.roshin.gallery.Utilities;
-import com.roshin.ui.ActionBar.BaseFragment;
-import com.roshin.ui.ActionBar.Theme;
-import com.roshin.gallery.AnimatorListenerAdapterProxy;
+import com.roshin.gallery.query.SharedMediaQuery;
+import com.roshin.gallery.support.widget.LinearLayoutManager;
+import com.roshin.tgnet.ConnectionsManager;
+import com.roshin.tgnet.TLRPC;
 import com.roshin.ui.ActionBar.ActionBar;
 import com.roshin.ui.ActionBar.ActionBarMenu;
 import com.roshin.ui.ActionBar.ActionBarMenuItem;
+import com.roshin.ui.ActionBar.BaseFragment;
+import com.roshin.ui.ActionBar.Theme;
 import com.roshin.ui.Components.AnimatedFileDrawable;
 import com.roshin.ui.Components.CheckBox;
 import com.roshin.ui.Components.ClippingImageView;
-import com.roshin.gallery.ImageReceiver;
 import com.roshin.ui.Components.LayoutHelper;
 import com.roshin.ui.Components.PhotoCropView;
 import com.roshin.ui.Components.PhotoFilterView;
-import com.roshin.ui.Components.PickerBottomLayout;
 import com.roshin.ui.Components.PhotoViewerCaptionEnterView;
+import com.roshin.ui.Components.PickerBottomLayout;
 import com.roshin.ui.Components.RecyclerListView;
 import com.roshin.ui.Components.SeekBar;
 import com.roshin.ui.Components.SizeNotifierFrameLayoutPhoto;
@@ -1079,7 +1078,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         return;
                     }
                     cropItem.setVisibility(View.GONE);
-                    tuneItem.setVisibility(View.GONE);
+                    //tuneItem.setVisibility(View.GONE);
                     captionItem.setVisibility(View.GONE);
                     checkImageView.setVisibility(View.GONE);
                     captionDoneItem.setVisibility(View.VISIBLE);
@@ -1135,7 +1134,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         captionDoneItem = menu.addItemWithWidth(gallery_menu_caption_done, R.drawable.ic_done, AndroidUtilities.dp(56));
         captionItem = menu.addItemWithWidth(gallery_menu_caption, R.drawable.photo_text, AndroidUtilities.dp(56));
         cropItem = menu.addItemWithWidth(gallery_menu_crop, R.drawable.photo_crop, AndroidUtilities.dp(56));
-        tuneItem = menu.addItemWithWidth(gallery_menu_tune, R.drawable.photo_tools, AndroidUtilities.dp(56));
+        //tuneItem = menu.addItemWithWidth(gallery_menu_tune, R.drawable.photo_tools, AndroidUtilities.dp(56));
 
         bottomLayout = new FrameLayout(actvityContext);
         bottomLayout.setBackgroundColor(0x7f000000);
@@ -1424,7 +1423,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         cropItem.setVisibility(View.VISIBLE);
         captionItem.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= 16) {
-            tuneItem.setVisibility(View.VISIBLE);
+            //tuneItem.setVisibility(View.VISIBLE);
         }
         if (sendPhotoType == 0) {
             checkImageView.setVisibility(View.VISIBLE);
@@ -2030,7 +2029,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         checkImageView.setVisibility(View.GONE);
         pickerView.setVisibility(View.GONE);
         cropItem.setVisibility(View.GONE);
-        tuneItem.setVisibility(View.GONE);
+        //tuneItem.setVisibility(View.GONE);
         captionItem.setVisibility(View.GONE);
         captionDoneItem.setVisibility(View.GONE);
         captionEditText.setVisibility(View.GONE);
@@ -2096,7 +2095,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             cropItem.setVisibility(obj instanceof MediaController.PhotoEntry || obj instanceof MediaController.SearchImage && ((MediaController.SearchImage) obj).type == 0 ? View.VISIBLE : View.GONE);
 
             if (Build.VERSION.SDK_INT >= 16) {
-                tuneItem.setVisibility(cropItem.getVisibility());
+                //tuneItem.setVisibility(cropItem.getVisibility());
             }
             updateSelectedCount();
         }

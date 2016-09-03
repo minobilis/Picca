@@ -12,7 +12,9 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Build;
@@ -87,8 +89,11 @@ public class PhotoPickerAlbumsCell extends FrameLayout {
             linearLayout.setBackgroundColor(0x7f000000);
             addView(linearLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 28, Gravity.LEFT | Gravity.BOTTOM));
 
+            SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+            int albumTextSize = preferences.getInt("album_font_size", AndroidUtilities.isTablet() ? 15 : 13);
+
             nameTextView = new TextView(context);
-            nameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+            nameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, albumTextSize);
             nameTextView.setTextColor(0xffffffff);
             nameTextView.setSingleLine(true);
             nameTextView.setEllipsize(TextUtils.TruncateAt.END);
@@ -97,7 +102,7 @@ public class PhotoPickerAlbumsCell extends FrameLayout {
             linearLayout.addView(nameTextView, LayoutHelper.createLinear(0, LayoutHelper.MATCH_PARENT, 1.0f, 8, 0, 0, 0));
 
             countTextView = new TextView(context);
-            countTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+            countTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, albumTextSize);
             countTextView.setTextColor(0xffaaaaaa);
             countTextView.setSingleLine(true);
             countTextView.setEllipsize(TextUtils.TruncateAt.END);

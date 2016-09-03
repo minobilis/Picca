@@ -28,7 +28,7 @@ import com.roshin.Picca.R;
 
 public class Theme {
 
-    public static final int ACTION_BAR_COLOR = 0xff527da3;
+    public static final int ACTION_BAR_COLOR = 0xff64d2bf;
     public static final int ACTION_BAR_PHOTO_VIEWER_COLOR = 0x7f000000;
     public static final int ACTION_BAR_MEDIA_PICKER_COLOR = 0xff333333;
 

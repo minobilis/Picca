@@ -182,6 +182,7 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
                         deleteSelectedAlbumsWithContent();
                         break;
                     case OPEN_SETTINGS_COMMAND:
+                        presentFragment(new SettingsActivity());
                         break;
                 }
             }
@@ -270,51 +271,7 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
         fragmentView = new FrameLayout(context);
         FrameLayout frameLayout = (FrameLayout) fragmentView;
         frameLayout.setBackgroundColor(0xff000000);
-
-        /*if (!singlePhoto) {
-            selectedMode = 0;
-
-            dropDownContainer = new ActionBarMenuItem(context, menu, 0);
-            dropDownContainer.setSubMenuOpenSide(1);
-            dropDownContainer.addSubItem(item_photos, LocaleController.getString("PickerPhotos", R.string.PickerPhotos), 0);
-            dropDownContainer.addSubItem(item_video, LocaleController.getString("PickerVideo", R.string.PickerVideo), 0);
-            actionBar.addView(dropDownContainer);
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) dropDownContainer.getLayoutParams();
-            layoutParams.height = LayoutHelper.MATCH_PARENT;
-            layoutParams.width = LayoutHelper.WRAP_CONTENT;
-            layoutParams.rightMargin = AndroidUtilities.dp(40);
-            layoutParams.leftMargin = AndroidUtilities.isTablet() ? AndroidUtilities.dp(64) : AndroidUtilities.dp(56);
-            layoutParams.gravity = Gravity.TOP | Gravity.LEFT;
-            dropDownContainer.setLayoutParams(layoutParams);
-            dropDownContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dropDownContainer.toggleSubMenu();
-                }
-            });
-
-            dropDown = new TextView(context);
-            dropDown.setGravity(Gravity.LEFT);
-            dropDown.setSingleLine(true);
-            dropDown.setLines(1);
-            dropDown.setMaxLines(1);
-            dropDown.setEllipsize(TextUtils.TruncateAt.END);
-            dropDown.setTextColor(0xffffffff);
-            dropDown.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
-            dropDown.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down, 0);
-            dropDown.setCompoundDrawablePadding(AndroidUtilities.dp(4));
-            dropDown.setPadding(0, 0, AndroidUtilities.dp(10), 0);
-            dropDown.setText(LocaleController.getString("PickerPhotos", R.string.PickerPhotos));
-            dropDownContainer.addView(dropDown);
-            layoutParams = (FrameLayout.LayoutParams) dropDown.getLayoutParams();
-            layoutParams.width = LayoutHelper.WRAP_CONTENT;
-            layoutParams.height = LayoutHelper.WRAP_CONTENT;
-            layoutParams.leftMargin = AndroidUtilities.dp(16);
-            layoutParams.gravity = Gravity.CENTER_VERTICAL;
-            dropDown.setLayoutParams(layoutParams);
-        } else {
-        }*/
-        actionBar.setTitle(LocaleController.getString("Gallery", R.string.Gallery));
+        actionBar.setTitle(LocaleController.getString("Albums", R.string.Albums));
 
         listView = new ListView(context);
         listView.setPadding(AndroidUtilities.dp(4), 0, AndroidUtilities.dp(4), AndroidUtilities.dp(4));

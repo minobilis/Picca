@@ -11,9 +11,9 @@ package com.roshin.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.roshin.Picca.R;
@@ -37,7 +37,6 @@ import com.roshin.gallery.MediaController;
 import com.roshin.gallery.NativeCrashManager;
 import com.roshin.gallery.NotificationCenter;
 import com.roshin.gallery.UserConfig;
-import com.roshin.tgnet.TLRPC;
 import com.roshin.ui.ActionBar.ActionBarLayout;
 import com.roshin.ui.ActionBar.BaseFragment;
 import com.roshin.ui.ActionBar.DrawerLayoutContainer;
@@ -104,6 +103,18 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         layoutParams.height = LayoutHelper.MATCH_PARENT;
         listView.setLayoutParams(layoutParams);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 2) {
+                    presentFragment(new SettingsActivity());
+                    drawerLayoutContainer.closeDrawer(false);
+                } else if (position == 3) {
+                    drawerLayoutContainer.closeDrawer(false);
+                }
+            }
+        });
+
         drawerLayoutContainer.setParentActionBarLayout(actionBarLayout);
         actionBarLayout.setDrawerLayoutContainer(drawerLayoutContainer);
         actionBarLayout.init(mainFragmentsStack);
@@ -160,12 +171,13 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
             AndroidUtilities.cancelRunOnUIThread(lockRunnable);
             lockRunnable = null;
         }
-        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.appDidLogout);
-        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.mainUserInfoChanged);
+
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.closeOtherAppActivities);
-        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.didUpdatedConnectionState);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.needShowAlert);
-        NotificationCenter.getInstance().removeObserver(this, NotificationCenter.wasUnableToFindCurrentLocation);
+    }
+
+    public void presentFragment(BaseFragment fragment) {
+        actionBarLayout.presentFragment(fragment);
     }
 
     public void fixLayout() {
