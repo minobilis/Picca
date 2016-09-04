@@ -116,37 +116,17 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         });
 
         drawerLayoutContainer.setParentActionBarLayout(actionBarLayout);
+        drawerLayoutContainer.setAllowOpenDrawer(true, false);
+
         actionBarLayout.setDrawerLayoutContainer(drawerLayoutContainer);
         actionBarLayout.init(mainFragmentsStack);
         actionBarLayout.setDelegate(this);
 
         if (actionBarLayout.fragmentsStack.isEmpty()){
             PhotoAlbumPickerActivity albumsActivity = new PhotoAlbumPickerActivity(true, false, null);
-            albumsActivity.setDelegate(new PhotoAlbumPickerActivity.PhotoAlbumPickerActivityDelegate() {
-                @Override
-                public void didSelectPhotos(ArrayList<String> photos, ArrayList<String> captions, ArrayList<MediaController.SearchImage> webPhotos) {
-                    if (!photos.isEmpty()) {
-                        Bitmap bitmap = ImageLoader.loadBitmap(photos.get(0), null, 800, 800, true);
-                    }
-                }
-
-                @Override
-                public void startPhotoSelectActivity() {
-                    try {
-                        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                        photoPickerIntent.setType("image");
-                    } catch (Exception e) {
-                        FileLog.e("picca", e);
-                    }
-                }
-
-                @Override
-                public boolean didSelectVideo(String path) {
-                    return true;
-                }
-            });
             actionBarLayout.addFragmentToStack(albumsActivity);
         }
+
         actionBarLayout.showLastFragment();
 
         final View view = getWindow().getDecorView().getRootView();
