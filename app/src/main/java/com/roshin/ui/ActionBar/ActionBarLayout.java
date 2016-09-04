@@ -31,9 +31,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.AnimatorListenerAdapterProxy;
-import com.roshin.Picca.R;
 import com.roshin.ui.Components.LayoutHelper;
 
 import java.util.ArrayList;

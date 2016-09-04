@@ -38,7 +38,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.roshin.Picca.R;
 
 import java.util.Locale;

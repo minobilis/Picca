@@ -20,8 +20,9 @@ import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
-import com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 import android.view.View;
+
+import com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

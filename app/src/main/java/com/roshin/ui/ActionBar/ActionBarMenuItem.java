@@ -29,10 +29,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.LocaleController;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.Components.LayoutHelper;
 
 import java.lang.reflect.Field;

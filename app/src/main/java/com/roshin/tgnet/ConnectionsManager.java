@@ -11,8 +11,8 @@ import android.os.Build;
 import android.os.PowerManager;
 
 import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.BuildVars;
 import com.roshin.gallery.ApplicationLoader;
+import com.roshin.gallery.BuildVars;
 import com.roshin.gallery.FileLog;
 import com.roshin.gallery.NotificationCenter;
 import com.roshin.gallery.Utilities;
@@ -241,7 +241,6 @@ public class ConnectionsManager {
             if (lastPauseTime == 0) {
                 lastPauseTime = System.currentTimeMillis();
             }
-            native_pauseNetwork();
         } else {
             if (appPaused) {
                 return;

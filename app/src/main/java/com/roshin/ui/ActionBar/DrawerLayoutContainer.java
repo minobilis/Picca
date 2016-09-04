@@ -28,10 +28,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.FileLog;
-import com.roshin.gallery.AnimatorListenerAdapterProxy;
 import com.roshin.Picca.R;
+import com.roshin.gallery.AndroidUtilities;
+import com.roshin.gallery.AnimatorListenerAdapterProxy;
+import com.roshin.gallery.FileLog;
 
 public class DrawerLayoutContainer extends FrameLayout {
 

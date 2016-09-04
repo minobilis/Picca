@@ -26,15 +26,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLog;
-
-import com.roshin.Picca.R;
 import com.roshin.tgnet.TLObject;
+import com.roshin.ui.ActionBar.Theme;
 import com.roshin.ui.Components.BackupImageView;
 import com.roshin.ui.Components.LayoutHelper;
-import com.roshin.ui.ActionBar.Theme;
 
 public class DrawerTopCell extends FrameLayout {
 

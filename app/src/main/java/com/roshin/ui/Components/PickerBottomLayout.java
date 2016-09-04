@@ -16,10 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.LocaleController;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.ActionBar.Theme;
 
 public class PickerBottomLayout extends FrameLayout {

@@ -19,13 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.Bitmaps;
-import com.roshin.gallery.ImageLoader;
 import com.roshin.gallery.FileLog;
+import com.roshin.gallery.ImageLoader;
 import com.roshin.gallery.LocaleController;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.ActionBar.ActionBar;
 import com.roshin.ui.ActionBar.ActionBarMenu;
 import com.roshin.ui.ActionBar.BaseFragment;

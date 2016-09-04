@@ -32,9 +32,9 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.CompoundButton;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.LocaleController;
-import com.roshin.Picca.R;
 
 
 public class Switch extends CompoundButton {

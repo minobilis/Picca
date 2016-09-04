@@ -16,9 +16,10 @@
 
 package com.roshin.gallery.support.widget;
 
+import com.roshin.gallery.support.widget.AdapterHelper.UpdateOp;
+
 import java.util.List;
 
-import com.roshin.gallery.support.widget.AdapterHelper.UpdateOp;
 import static com.roshin.gallery.support.widget.AdapterHelper.UpdateOp.ADD;
 import static com.roshin.gallery.support.widget.AdapterHelper.UpdateOp.MOVE;
 import static com.roshin.gallery.support.widget.AdapterHelper.UpdateOp.REMOVE;

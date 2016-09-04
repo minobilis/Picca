@@ -31,16 +31,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.LocaleController;
-import com.roshin.gallery.support.widget.LinearLayoutManager;
-import com.roshin.gallery.support.widget.RecyclerView;
+import com.roshin.gallery.AnimatorListenerAdapterProxy;
 import com.roshin.gallery.DispatchQueue;
 import com.roshin.gallery.FileLog;
-
+import com.roshin.gallery.LocaleController;
 import com.roshin.gallery.Utilities;
-import com.roshin.gallery.AnimatorListenerAdapterProxy;
-import com.roshin.Picca.R;
+import com.roshin.gallery.support.widget.LinearLayoutManager;
+import com.roshin.gallery.support.widget.RecyclerView;
 import com.roshin.ui.ActionBar.Theme;
 import com.roshin.ui.Cells.PhotoEditToolCell;
 

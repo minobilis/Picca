@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Base64;
 
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.roshin.Picca.R;

@@ -22,7 +22,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.roshin.gallery.support.widget.RecyclerView.*;
+import static com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 
 /**
  * Helper class that can enqueue and process adapter update operations.

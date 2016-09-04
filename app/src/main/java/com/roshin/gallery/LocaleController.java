@@ -18,10 +18,11 @@ import android.content.res.Configuration;
 import android.text.format.DateFormat;
 import android.util.Xml;
 
-import com.roshin.gallery.time.FastDateFormat;
 import com.roshin.Picca.R;
+import com.roshin.gallery.time.FastDateFormat;
 import com.roshin.tgnet.ConnectionsManager;
 import com.roshin.tgnet.TLRPC;
+
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.File;

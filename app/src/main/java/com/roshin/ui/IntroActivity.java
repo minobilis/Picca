@@ -27,11 +27,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.BuildVars;
 import com.roshin.gallery.LocaleController;
-
-import com.roshin.Picca.R;
 import com.roshin.tgnet.ConnectionsManager;
 import com.roshin.ui.ActionBar.Theme;
 

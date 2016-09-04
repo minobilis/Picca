@@ -21,9 +21,9 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.ApplicationLoader;
-import com.roshin.Picca.R;
 
 
 public class Theme {

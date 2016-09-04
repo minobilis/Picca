@@ -41,12 +41,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.AnimatorListenerAdapterProxy;
-import com.roshin.gallery.LocaleController;
 import com.roshin.gallery.FileLog;
-
-import com.roshin.Picca.R;
+import com.roshin.gallery.LocaleController;
 import com.roshin.ui.Components.LayoutHelper;
 
 import java.util.ArrayList;

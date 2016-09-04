@@ -13,15 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.LocaleController;
-
 import com.roshin.gallery.UserConfig;
-import com.roshin.Picca.R;
-import com.roshin.ui.Cells.DrawerActionCell;
 import com.roshin.ui.Cells.DividerCell;
-import com.roshin.ui.Cells.EmptyCell;
+import com.roshin.ui.Cells.DrawerActionCell;
 import com.roshin.ui.Cells.DrawerTopCell;
+import com.roshin.ui.Cells.EmptyCell;
 
 public class DrawerLayoutAdapter extends BaseAdapter {
 

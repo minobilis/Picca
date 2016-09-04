@@ -23,18 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.FileLog;
 import com.roshin.gallery.LocaleController;
-
 import com.roshin.gallery.Utilities;
-import com.roshin.Picca.R;
-import com.roshin.ui.Adapters.BaseFragmentAdapter;
-import com.roshin.ui.Cells.TextSettingsCell;
 import com.roshin.ui.ActionBar.ActionBar;
 import com.roshin.ui.ActionBar.ActionBarMenu;
 import com.roshin.ui.ActionBar.ActionBarMenuItem;
 import com.roshin.ui.ActionBar.BaseFragment;
+import com.roshin.ui.Adapters.BaseFragmentAdapter;
+import com.roshin.ui.Cells.TextSettingsCell;
 import com.roshin.ui.Components.LayoutHelper;
 
 import java.util.ArrayList;

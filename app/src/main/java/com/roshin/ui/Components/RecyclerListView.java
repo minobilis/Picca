@@ -19,8 +19,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.support.widget.RecyclerView;
 import com.roshin.gallery.FileLog;
+import com.roshin.gallery.support.widget.RecyclerView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

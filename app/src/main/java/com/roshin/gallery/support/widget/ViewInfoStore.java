@@ -22,16 +22,15 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
 import android.support.v4.util.Pools;
 
-import static com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 import static com.roshin.gallery.support.widget.RecyclerView.ItemAnimator.ItemHolderInfo;
-
-import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_APPEAR_PRE_AND_POST;
-import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_APPEAR_AND_DISAPPEAR;
-import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_PRE_AND_POST;
-import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_DISAPPEARED;
+import static com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_APPEAR;
-import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_PRE;
+import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_APPEAR_AND_DISAPPEAR;
+import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_APPEAR_PRE_AND_POST;
+import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_DISAPPEARED;
 import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_POST;
+import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_PRE;
+import static com.roshin.gallery.support.widget.ViewInfoStore.InfoRecord.FLAG_PRE_AND_POST;
 /**
  * This class abstracts all tracking for Views to run animations
  *

@@ -27,10 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.FileLog;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.Components.LayoutHelper;
 
 import java.lang.reflect.Field;

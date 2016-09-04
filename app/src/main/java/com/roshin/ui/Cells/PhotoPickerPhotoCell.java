@@ -16,10 +16,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.AnimatorListenerAdapterProxy;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.Components.BackupImageView;
 import com.roshin.ui.Components.CheckBox;
 import com.roshin.ui.Components.LayoutHelper;

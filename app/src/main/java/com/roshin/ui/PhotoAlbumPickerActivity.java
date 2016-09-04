@@ -27,13 +27,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
+import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.LocaleController;
 import com.roshin.gallery.MediaController;
 import com.roshin.gallery.NotificationCenter;
-import com.roshin.gallery.ApplicationLoader;
-
-import com.roshin.Picca.R;
 import com.roshin.ui.ActionBar.ActionBar;
 import com.roshin.ui.ActionBar.ActionBarMenu;
 import com.roshin.ui.ActionBar.ActionBarMenuItem;

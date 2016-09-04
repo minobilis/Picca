@@ -27,13 +27,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.AnimatorListenerAdapterProxy;
 import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLog;
 import com.roshin.gallery.MediaController;
-
-import com.roshin.Picca.R;
 import com.roshin.gallery.NotificationCenter;
 import com.roshin.ui.Components.BackupImageView;
 import com.roshin.ui.Components.CheckBox;

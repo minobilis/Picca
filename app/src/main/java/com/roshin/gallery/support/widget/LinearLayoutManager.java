@@ -16,8 +16,6 @@
 
 package com.roshin.gallery.support.widget;
 
-import static com.roshin.gallery.support.widget.RecyclerView.NO_POSITION;
-
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Parcel;
@@ -25,15 +23,17 @@ import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
-import com.roshin.gallery.support.widget.RecyclerView.LayoutParams;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.roshin.gallery.support.widget.RecyclerView.LayoutParams;
+
 import java.util.List;
+
+import static com.roshin.gallery.support.widget.RecyclerView.NO_POSITION;
 
 public class LinearLayoutManager extends RecyclerView.LayoutManager {
 

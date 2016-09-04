@@ -29,13 +29,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
-import com.roshin.gallery.LocaleController;
-import com.roshin.gallery.NotificationCenter;
 import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLog;
-
-import com.roshin.Picca.R;
+import com.roshin.gallery.LocaleController;
+import com.roshin.gallery.NotificationCenter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

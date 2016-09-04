@@ -8,11 +8,10 @@
 
 package com.roshin.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,8 +31,6 @@ import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.gallery.ApplicationLoader;
 import com.roshin.gallery.FileLog;
-import com.roshin.gallery.ImageLoader;
-import com.roshin.gallery.MediaController;
 import com.roshin.gallery.NativeCrashManager;
 import com.roshin.gallery.NotificationCenter;
 import com.roshin.gallery.UserConfig;
@@ -48,6 +45,7 @@ import java.util.ArrayList;
 
 public class LaunchActivity extends Activity implements ActionBarLayout.ActionBarLayoutDelegate, NotificationCenter.NotificationCenterDelegate {
 
+    private static final int PERMISSION_REQUEST_CODE = 0;
     private boolean finished;
     private static ArrayList<BaseFragment> mainFragmentsStack = new ArrayList<>();
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
@@ -69,6 +67,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
 
         super.onCreate(savedInstanceState);
+
         Theme.loadRecources(this);
 
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -79,10 +78,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         actionBarLayout = new ActionBarLayout(this);
         drawerLayoutContainer = new DrawerLayoutContainer(this);
         setContentView(drawerLayoutContainer, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-
         drawerLayoutContainer.addView(actionBarLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
 
         ListView listView = new ListView(this) {
             @Override
@@ -122,13 +118,6 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         actionBarLayout.init(mainFragmentsStack);
         actionBarLayout.setDelegate(this);
 
-        if (actionBarLayout.fragmentsStack.isEmpty()){
-            PhotoAlbumPickerActivity albumsActivity = new PhotoAlbumPickerActivity(true, false, null);
-            actionBarLayout.addFragmentToStack(albumsActivity);
-        }
-
-        actionBarLayout.showLastFragment();
-
         final View view = getWindow().getDecorView().getRootView();
         view.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -140,6 +129,31 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                 }
             }
         });
+
+        if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        } else {
+            openAlbums();
+        }
+    }
+
+    public void openAlbums() {
+        if (actionBarLayout.fragmentsStack.isEmpty()){
+            PhotoAlbumPickerActivity albumsActivity = new PhotoAlbumPickerActivity(true, false, null);
+            actionBarLayout.addFragmentToStack(albumsActivity);
+        }
+
+        actionBarLayout.showLastFragment();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openAlbums();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void onFinish() {

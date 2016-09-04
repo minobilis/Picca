@@ -11,8 +11,8 @@ package com.roshin.ui.Cells;
 import android.content.Context;
 import android.view.View;
 
-import com.roshin.gallery.AndroidUtilities;
 import com.roshin.Picca.R;
+import com.roshin.gallery.AndroidUtilities;
 
 
 public class ShadowSectionCell extends View {

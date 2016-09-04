@@ -2,11 +2,11 @@ package com.roshin.gallery.support.widget;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.roshin.gallery.support.widget.RecyclerView.Adapter;
-import com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
-
 import android.util.Log;
 import android.view.View;
+
+import com.roshin.gallery.support.widget.RecyclerView.Adapter;
+import com.roshin.gallery.support.widget.RecyclerView.ViewHolder;
 
 /**
  * A wrapper class for ItemAnimator that records View bounds and decides whether it should run

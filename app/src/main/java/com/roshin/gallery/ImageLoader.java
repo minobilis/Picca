@@ -36,7 +36,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -895,53 +894,6 @@ public class ImageLoader {
         }
     }
 
-    public class VMRuntimeHack {
-        private Object runtime = null;
-        private Method trackAllocation = null;
-        private Method trackFree = null;
-
-        public boolean trackAlloc(long size) {
-            if (runtime == null) {
-                return false;
-            }
-            try {
-                Object res = trackAllocation.invoke(runtime, size);
-                return (res instanceof Boolean) ? (Boolean) res : true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        public boolean trackFree(long size) {
-            if (runtime == null) {
-                return false;
-            }
-            try {
-                Object res = trackFree.invoke(runtime, size);
-                return (res instanceof Boolean) ? (Boolean) res : true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        public VMRuntimeHack() {
-            try {
-                Class cl = Class.forName("dalvik.system.VMRuntime");
-                Method getRt = cl.getMethod("getRuntime", new Class[0]);
-                Object[] objects = new Object[0];
-                runtime = getRt.invoke(null, objects);
-                trackAllocation = cl.getMethod("trackExternalAllocation", new Class[]{long.class});
-                trackFree = cl.getMethod("trackExternalFree", new Class[]{long.class});
-            } catch (Exception e) {
-                FileLog.e("picca", e);
-                runtime = null;
-                trackAllocation = null;
-                trackFree = null;
-            }
-        }
-    }
-
     private class CacheImage {
         protected String key;
         protected String url;
@@ -1398,21 +1350,6 @@ public class ImageLoader {
         return fileProgresses.get(location);
     }
 
-    private void performReplace(String oldKey, String newKey) {
-        BitmapDrawable b = memCache.get(oldKey);
-        if (b != null) {
-            ignoreRemoval = oldKey;
-            memCache.remove(oldKey);
-            memCache.put(newKey, b);
-            ignoreRemoval = null;
-        }
-        Integer val = bitmapUseCounts.get(oldKey);
-        if (val != null) {
-            bitmapUseCounts.put(newKey, val);
-            bitmapUseCounts.remove(oldKey);
-        }
-    }
-
     public void incrementUseCount(String key) {
         Integer count = bitmapUseCounts.get(key);
         if (count == null) {
@@ -1491,65 +1428,6 @@ public class ImageLoader {
                 }
             }
         });
-    }
-
-    public BitmapDrawable getImageFromMemory(String key) {
-        return memCache.get(key);
-    }
-
-    public BitmapDrawable getImageFromMemory(TLObject fileLocation, String httpUrl, String filter) {
-        if (fileLocation == null && httpUrl == null) {
-            return null;
-        }
-        String key = null;
-        if (httpUrl != null) {
-            key = Utilities.MD5(httpUrl);
-        } else {
-            if (fileLocation instanceof TLRPC.FileLocation) {
-                TLRPC.FileLocation location = (TLRPC.FileLocation) fileLocation;
-                key = location.volume_id + "_" + location.local_id;
-            } else if (fileLocation instanceof TLRPC.Document) {
-                TLRPC.Document location = (TLRPC.Document) fileLocation;
-                key = location.dc_id + "_" + location.id;
-            }
-        }
-        if (filter != null) {
-            key += "@" + filter;
-        }
-        return memCache.get(key);
-    }
-
-    private void replaceImageInCacheInternal(final String oldKey, final String newKey, final TLRPC.FileLocation newLocation) {
-        ArrayList<String> arr = memCache.getFilterKeys(oldKey);
-        if (arr != null) {
-            for (int a = 0; a < arr.size(); a++) {
-                String filter = arr.get(a);
-                String oldK = oldKey + "@" + filter;
-                String newK = newKey + "@" + filter;
-                performReplace(oldK, newK);
-                NotificationCenter.getInstance().postNotificationName(NotificationCenter.didReplacedPhotoInMemCache, oldK, newK, newLocation);
-            }
-        } else {
-            performReplace(oldKey, newKey);
-            NotificationCenter.getInstance().postNotificationName(NotificationCenter.didReplacedPhotoInMemCache, oldKey, newKey, newLocation);
-        }
-    }
-
-    public void replaceImageInCache(final String oldKey, final String newKey, final TLRPC.FileLocation newLocation, boolean post) {
-        if (post) {
-            AndroidUtilities.runOnUIThread(new Runnable() {
-                @Override
-                public void run() {
-                    replaceImageInCacheInternal(oldKey, newKey, newLocation);
-                }
-            });
-        } else {
-            replaceImageInCacheInternal(oldKey, newKey, newLocation);
-        }
-    }
-
-    public void putImageToCache(BitmapDrawable bitmap, String key) {
-        memCache.put(key, bitmap);
     }
 
     private void generateThumb(int mediaType, File originalPath, TLRPC.FileLocation thumbLocation, String filter) {
@@ -1885,34 +1763,6 @@ public class ImageLoader {
         }
     }
 
-    public void loadHttpFile(String url, String defaultExt) {
-        if (url == null || url.length() == 0 || httpFileLoadTasksByKeys.containsKey(url)) {
-            return;
-        }
-        String ext = getHttpUrlExtension(url, defaultExt);
-        File file = new File(FileLoader.getInstance().getDirectory(FileLoader.MEDIA_DIR_CACHE), Utilities.MD5(url) + "_temp." + ext);
-        file.delete();
-
-        HttpFileTask task = new HttpFileTask(url, file, ext);
-        httpFileLoadTasks.add(task);
-        httpFileLoadTasksByKeys.put(url, task);
-        runHttpFileLoadTasks(null, 0);
-    }
-
-    public void cancelLoadHttpFile(String url) {
-        HttpFileTask task = httpFileLoadTasksByKeys.get(url);
-        if (task != null) {
-            task.cancel(true);
-            httpFileLoadTasksByKeys.remove(url);
-            httpFileLoadTasks.remove(task);
-        }
-        Runnable runnable = retryHttpsTasks.get(url);
-        if (runnable != null) {
-            AndroidUtilities.cancelRunOnUIThread(runnable);
-        }
-        runHttpFileLoadTasks(null, 0);
-    }
-
     private void runHttpFileLoadTasks(final HttpFileTask oldTask, final int reason) {
         AndroidUtilities.runOnUIThread(new Runnable() {
             @Override
@@ -2085,23 +1935,6 @@ public class ImageLoader {
         }
 
         return b;
-    }
-
-    public static void fillPhotoSizeWithBytes(TLRPC.PhotoSize photoSize) {
-        if (photoSize == null || photoSize.bytes != null) {
-            return;
-        }
-        File file = FileLoader.getPathToAttach(photoSize, true);
-        try {
-            RandomAccessFile f = new RandomAccessFile(file, "r");
-            int len = (int) f.length();
-            if (len < 20000) {
-                photoSize.bytes = new byte[(int) f.length()];
-                f.readFully(photoSize.bytes, 0, photoSize.bytes.length);
-            }
-        } catch (Throwable e) {
-            FileLog.e("picca", e);
-        }
     }
 
     private static TLRPC.PhotoSize scaleAndSaveImageInternal(Bitmap bitmap, int w, int h, float photoW, float photoH, float scaleFactor, int quality, boolean cache, boolean scaleAnyway) throws Exception {
