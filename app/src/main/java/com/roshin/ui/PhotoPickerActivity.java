@@ -152,6 +152,7 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
                 loadingRecent = true;
             }
         }*/
+
         return super.onFragmentCreate();
     }
 
@@ -571,9 +572,6 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
             getParentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
         fixLayout();
-        actionBar.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     @Override

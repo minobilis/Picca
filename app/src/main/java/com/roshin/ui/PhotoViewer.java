@@ -544,9 +544,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             int widthSize = MeasureSpec.getSize(widthMeasureSpec);
             int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-            if (heightSize > AndroidUtilities.displaySize.y - AndroidUtilities.statusBarHeight) {
-                heightSize = AndroidUtilities.displaySize.y - AndroidUtilities.statusBarHeight;
-            }
 
             setMeasuredDimension(widthSize, heightSize);
 
@@ -839,10 +836,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     }
                 }
             }
-        } else if (id == NotificationCenter.emojiDidLoaded) {
-            if (captionTextView != null) {
-                captionTextView.invalidate();
-            }
         }
     }
 
@@ -925,9 +918,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         };
         windowView.setBackgroundDrawable(backgroundDrawable);
         windowView.setFocusable(false);
-        if (Build.VERSION.SDK_INT >= 23) {
-            windowView.setFitsSystemWindows(true);
-        }
 
         animatingImageView = new ClippingImageView(activity);
         animatingImageView.setAnimationValues(animationValues);
@@ -941,12 +931,15 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 if (Build.VERSION.SDK_INT >= 19) {
                     visible = (visibility &
                             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
-                } // TODO: 02.09.2016 check for 4.1
+
+                } else if (Build.VERSION.SDK_INT >= 16) {
+                    visible = (visibility &
+                            View.SYSTEM_UI_FLAG_LOW_PROFILE) == 0;
+                }
 
                 toggleActionBar(visible, true);
             }
         });
-
         containerView.setFocusable(false);
         windowView.addView(containerView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
 
@@ -959,7 +952,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         actionBar = new ActionBar(activity);
         actionBar.setBackgroundColor(Theme.ACTION_BAR_PHOTO_VIEWER_COLOR);
-        actionBar.setOccupyStatusBar(false);
+        actionBar.setOccupyStatusBar(true);
         actionBar.setItemsBackgroundColor(Theme.ACTION_BAR_WHITE_SELECTOR_COLOR);
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setTitle(LocaleController.formatString("Of", R.string.Of, 1, 1));
@@ -2444,6 +2437,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
     public void openPhoto(final Object messageObject, final TLRPC.FileLocation fileLocation, final ArrayList<Object> messages, final ArrayList<Object> photos, final int index, final PhotoViewerProvider provider, BaseFragment chatActivity, long dialogId, long mDialogId) {
         showSystemUI(containerView);
+
+
         if (parentActivity == null || isVisible || provider == null && checkAnimation() || messageObject == null && fileLocation == null && messages == null && photos == null) {
             return;
         }
@@ -2657,7 +2652,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     }
 
     public void closePhoto(boolean animated, boolean fromEditMode) {
-        showSystemUI(containerView);
+        containerView.setSystemUiVisibility(0);
+
         if (!fromEditMode && currentEditMode != 0) {
             if (currentEditMode == 1) {
                 photoCropView.cancelAnimationRunnable();
@@ -3679,7 +3675,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
 
         } else if (Build.VERSION.SDK_INT >= 16) {
-            systemUIVisible = (mDecorView.getSystemUiVisibility() == 0);
+            systemUIVisible = (mDecorView.getSystemUiVisibility()
+                    & View.SYSTEM_UI_FLAG_LOW_PROFILE) == 0;
         }
 
         if (systemUIVisible) {
