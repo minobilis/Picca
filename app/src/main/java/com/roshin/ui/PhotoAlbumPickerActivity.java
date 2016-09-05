@@ -191,7 +191,7 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
 
         ActionBarMenu menu = actionBar.createMenu();
         ActionBarMenuItem extendedMenu = menu.addItem(EXTRA_MENU, R.drawable.ic_ab_other);
-        extendedMenu.addSubItem(OPEN_SETTINGS_COMMAND, "Settings", 0); // TODO: 18.08.2016 extract string
+        extendedMenu.addSubItem(OPEN_SETTINGS_COMMAND, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings);
 
 
         final ActionBarMenu actionMode = actionBar.createActionMode();
