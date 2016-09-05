@@ -1364,6 +1364,7 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
 
     private void deleteCheckedFiles() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle(LocaleController.getString("DeleteQuestion", R.string.DeleteQuestion));
         builder.setMessage(LocaleController.getString("AreYouSureDeletePhotos", R.string.AreYouSureDeletePhotos));
         builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), new DialogInterface.OnClickListener() {
             @Override

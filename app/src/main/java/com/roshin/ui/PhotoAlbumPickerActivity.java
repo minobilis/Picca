@@ -327,28 +327,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
         layoutParams.gravity = Gravity.CENTER;
         progressView.setLayoutParams(layoutParams);
 
-        /*pickerBottomLayout = new PickerBottomLayout(context);
-        pickerBottomLayout.setVisibility(View.GONE);
-        frameLayout.addView(pickerBottomLayout);
-        layoutParams = (FrameLayout.LayoutParams) pickerBottomLayout.getLayoutParams();
-        layoutParams.width = LayoutHelper.MATCH_PARENT;
-        layoutParams.height = AndroidUtilities.dp(48);
-        layoutParams.gravity = Gravity.BOTTOM;
-        pickerBottomLayout.setLayoutParams(layoutParams);
-        pickerBottomLayout.cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishFragment();
-            }
-        });
-        pickerBottomLayout.doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSelectedPhotos();
-                finishFragment();
-            }
-        });*/
-
         if (loading && (albumsSorted == null || albumsSorted != null && albumsSorted.isEmpty())) {
             progressView.setVisibility(View.VISIBLE);
             listView.setEmptyView(null);
@@ -356,13 +334,13 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
             progressView.setVisibility(View.GONE);
             listView.setEmptyView(emptyView);
         }
-        //pickerBottomLayout.updateSelectedCount(selectedPhotos.size() + selectedWebPhotos.size(), true);
 
         return fragmentView;
     }
 
     private void deleteSelectedAlbumsWithContent() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle(LocaleController.getString("DeleteQuestion", R.string.DeleteQuestion));
         builder.setMessage(LocaleController.getString("AreYouSureDeleteAlbum", R.string.AreYouSureDeleteAlbum));
         builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), new DialogInterface.OnClickListener() {
             @Override

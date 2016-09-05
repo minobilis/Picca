@@ -163,6 +163,7 @@
     <string name="AreYouSureLogout">Are you sure you want to log out?\n\nNote that you can seamlessly use Picca on all your devices at once.\n\nRemember, logging out kills all your Secret Chats.</string>
     <string name="AreYouSureDeleteAlbum">Are you sure you want to delete selected albums with images?</string>
     <string name="AreYouSureDeletePhotos">Are you sure you want to delete selected photos?</string>
+    <string name="DeleteQuestion">Delete?</string>
     <!--permissions-->
     <!--Intro view-->
     <string name="Page1Title">Picca</string>
