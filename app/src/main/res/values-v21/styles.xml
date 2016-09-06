@@ -11,27 +11,15 @@
 
     <!--THEMES-->
 
-    <style name="Theme.TMessages.Start" parent="@android:style/Theme.Material">
-        <item name="android:actionBarStyle">@style/ActionBar.Transparent.TMessages.Start</item>
-        <item name="android:colorBackground">@android:color/black</item>
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorPrimaryDark">#33000000</item>
-        <item name="android:colorPrimary">#33000000</item>
-        <item name="android:textColorSecondary">@android:color/black</item>
-        <item name="android:textColorPrimary">@android:color/black</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
-    <style name="Theme.TMessages" parent="@android:style/Theme.Material.Light">
+    <style name="Theme.Picca" parent="@android:style/Theme.Material.Light">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBarOverlay">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorBackground">@android:color/white</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:itemTextAppearance">@style/ActionBar.Transparent.TMessages.Item</item>
-        <item name="android:listViewStyle">@style/Theme.TMessages.ListView</item>
+        <item name="android:itemTextAppearance">@style/ActionBar.Transparent.Picca.Item</item>
+        <item name="android:listViewStyle">@style/Theme.Picca.ListView</item>
         <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector</item>
         <item name="android:editTextStyle">@style/Theme.TMessages.EditText</item>
         <item name="android:actionBarItemBackground">@drawable/bar_selector_style</item>
@@ -39,15 +27,8 @@
         <item name="android:colorPrimary">@android:color/secondary_text_light</item>
         <item name="android:alertDialogTheme">@style/Theme.TMessages.Dialog.Alert</item>
         <item name="android:colorControlActivated">#33000000</item>
-    </style>
-
-    <style name="Theme.TMessages.PopupNotification" parent="Theme.TMessages">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:colorPrimaryDark">#99000000</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.TMessages.Dialog.Alert" parent="android:style/Theme.Material.Light.Dialog.Alert">
@@ -57,7 +38,7 @@
 
     <!--ACTION BAR-->
 
-    <style name="ActionBar.Transparent.TMessages.Start" parent="android:style/Widget.Material.Light.ActionBar">
+    <style name="ActionBar.Transparent.Picca.Start" parent="android:style/Widget.Material.Light.ActionBar">
         <item name="android:background">#33000000</item>
         <item name="android:logo">@drawable/transparent</item>
         <item name="android:title">""</item>
@@ -65,7 +46,7 @@
 
     <!--ACTION BAR ITEMS-->
     
-    <style name="ActionBar.Transparent.TMessages.Item" parent="android:TextAppearance.Widget.IconMenu.Item">
+    <style name="ActionBar.Transparent.Picca.Item" parent="android:TextAppearance.Widget.IconMenu.Item">
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">18sp</item>
     </style>
@@ -78,7 +59,7 @@
 
     <!--LIST VIEW-->
 
-    <style name="Theme.TMessages.ListView" parent="@android:style/Widget.Material.Light.ListView">
+    <style name="Theme.Picca.ListView" parent="@android:style/Widget.Material.Light.ListView">
         <!--<item name="android:listSelector">@drawable/list_selector</item>-->
         <item name="android:fadingEdge">none</item>
         <item name="android:dividerHeight">1dp</item>

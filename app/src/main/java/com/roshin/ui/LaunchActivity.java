@@ -63,17 +63,12 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         NativeCrashManager.handleDumpFiles(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setTheme(R.style.Theme_TMessages);
+        setTheme(R.style.Theme_Picca);
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
 
         super.onCreate(savedInstanceState);
 
-        Theme.loadRecources(this);
-
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            AndroidUtilities.statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
+        AndroidUtilities.getSystemUISizes(this);
 
         actionBarLayout = new ActionBarLayout(this);
         drawerLayoutContainer = new DrawerLayoutContainer(this);

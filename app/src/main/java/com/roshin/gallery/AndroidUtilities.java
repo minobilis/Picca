@@ -96,19 +96,20 @@ public class AndroidUtilities {
     private static final Object callLock = new Object();
 
     public static int statusBarHeight = 0;
+    public static int navigationBarHeight = 0;
     public static float density = 1;
     public static Point displaySize = new Point();
+    public static Point displayRealSize = new Point();
     public static Integer photoSize = null;
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
     public static int leftBaseline;
     public static boolean usingHardwareInput;
     private static Boolean isTablet = null;
     private static int adjustOwnerClassGuid = 0;
-
     private static Paint roundPaint;
     private static RectF bitmapRect;
-
     public static Pattern WEB_URL = null;
+
     static {
         try {
             final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF";
@@ -497,6 +498,11 @@ public class AndroidUtilities {
                 if (display != null) {
                     display.getMetrics(displayMetrics);
                     display.getSize(displaySize);
+
+                    if (Build.VERSION.SDK_INT >= 17) {
+                        display.getRealSize(displayRealSize);
+                    }
+
                     FileLog.e("tmessages", "display size = " + displaySize.x + " " + displaySize.y + " " + displayMetrics.xdpi + "x" + displayMetrics.ydpi);
                 }
             }
@@ -1369,5 +1375,17 @@ public class AndroidUtilities {
         byte[] key_hash = new byte[16];
         System.arraycopy(sha1, 0, key_hash, 0, 16);
         return key_hash;
+    }
+
+    public static void getSystemUISizes(Context context) {
+        int statusBarId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (statusBarId > 0) {
+            AndroidUtilities.statusBarHeight = context.getResources().getDimensionPixelSize(statusBarId);
+        }
+
+        int navigationBarId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (navigationBarId > 0) {
+            AndroidUtilities.navigationBarHeight = context.getResources().getDimensionPixelSize(navigationBarId);
+        }
     }
 }

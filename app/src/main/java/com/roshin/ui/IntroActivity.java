@@ -49,7 +49,7 @@ public class IntroActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_TMessages);
+        setTheme(R.style.Theme_Picca);
         super.onCreate(savedInstanceState);
         Theme.loadRecources(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
