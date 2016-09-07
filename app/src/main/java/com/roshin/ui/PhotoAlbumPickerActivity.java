@@ -84,9 +84,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     private ListAdapter listAdapter;
     private FrameLayout progressView;
     private TextView emptyView;
-    private TextView dropDown;
-    private ActionBarMenuItem dropDownContainer;
-    private PickerBottomLayout pickerBottomLayout;
     private boolean sendPressed;
     private boolean singlePhoto;
     private boolean allowGifs;
@@ -164,7 +161,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
                             return;
                         }
                         selectedMode = 0;
-                        dropDown.setText(LocaleController.getString("PickerPhotos", R.string.PickerPhotos));
                         emptyView.setText(LocaleController.getString("NoPhotos", R.string.NoPhotos));
                         listAdapter.notifyDataSetChanged();
                         break;
@@ -173,7 +169,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
                             return;
                         }
                         selectedMode = 1;
-                        dropDown.setText(LocaleController.getString("PickerVideo", R.string.PickerVideo));
                         emptyView.setText(LocaleController.getString("NoVideo", R.string.NoVideo));
                         listAdapter.notifyDataSetChanged();
                         break;
@@ -384,14 +379,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (dropDownContainer != null) {
-            dropDownContainer.closeSubMenu();
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (listAdapter != null) {
@@ -538,6 +525,7 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     }
 
     private void fixLayout() {
+        AndroidUtilities.checkDisplaySize();
         if (listView != null) {
             ViewTreeObserver obs = listView.getViewTreeObserver();
             obs.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -561,24 +549,10 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
         WindowManager manager = (WindowManager) ApplicationLoader.applicationContext.getSystemService(Activity.WINDOW_SERVICE);
         int rotation = manager.getDefaultDisplay().getRotation();
         columnsCount = 2;
-        if (!AndroidUtilities.isTablet() && (rotation == Surface.ROTATION_270 || rotation == Surface.ROTATION_90)) {
+        if (rotation == Surface.ROTATION_270 || rotation == Surface.ROTATION_90) {
             columnsCount = 4;
         }
         listAdapter.notifyDataSetChanged();
-
-        if (dropDownContainer != null) {
-            if (!AndroidUtilities.isTablet()) {
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) dropDownContainer.getLayoutParams();
-                layoutParams.topMargin = (Build.VERSION.SDK_INT >= 21 ? AndroidUtilities.statusBarHeight : 0);
-                dropDownContainer.setLayoutParams(layoutParams);
-            }
-
-            if (!AndroidUtilities.isTablet() && ApplicationLoader.applicationContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                dropDown.setTextSize(18);
-            } else {
-                dropDown.setTextSize(20);
-            }
-        }
     }
 
     private void openPhotoPicker(MediaController.AlbumEntry albumEntry, int type) {
@@ -594,9 +568,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
         fragment.setDelegate(new PhotoPickerActivity.PhotoPickerActivityDelegate() {
             @Override
             public void selectedPhotosChanged() {
-                if (pickerBottomLayout != null) {
-                    pickerBottomLayout.updateSelectedCount(selectedPhotos.size() + selectedWebPhotos.size(), true);
-                }
             }
 
             @Override
