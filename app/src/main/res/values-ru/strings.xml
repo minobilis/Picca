@@ -51,7 +51,7 @@
     <string name="Stickers">Stickers</string>
     <!--settings view-->
     <string name="TextSize">Messages Text Size</string>
-    <string name="AlbumCaptionTextSize">Размер шрифта названий альбомов</string>
+    <string name="AlbumCaptionTextSize">Размер текста названий альбомов</string>
     <string name="AskAQuestion">Ask a Question</string>
     <string name="EnableAnimations">Enable Animations</string>
     <string name="NotificationsAndSounds">Notifications and Sounds</string>
@@ -94,7 +94,7 @@
     <string name="ShowAllMedia">Show all media</string>
     <string name="SaveToGallery">Save to gallery</string>
     <string name="Of">%1$d of %2$d</string>
-    <string name="Gallery">Gallery</string>
+    <string name="Gallery">Галерея</string>
     <string name="Albums">Альбомы</string>
     <string name="NoPhotos">No photos yet</string>
     <string name="NoVideo">No videos yet</string>
@@ -104,7 +104,7 @@
     <string name="SearchImages">FIND IMAGES</string>
     <string name="SearchImagesInfo">WEB SEARCH</string>
     <string name="SearchGifs">FIND GIFS</string>
-    <string name="CropImage">Обрезать изображение</string>
+    <string name="CropImage">Crop image</string>
     <string name="Enhance">Enhance</string>
     <string name="Highlights">Highlights</string>
     <string name="Contrast">Contrast</string>
@@ -128,7 +128,7 @@
     <string name="BlurOff">Off</string>
     <string name="BlurLinear">Linear</string>
     <string name="BlurRadial">Radial</string>
-    <string name="AreYouSureDeletePhoto">Вы уверены, что хотите удалить это фото?</string>
+    <string name="AreYouSureDeletePhoto">Вы уверены, что хотите удалить эту фотографию?</string>
     <string name="DiscardChanges">Discard changes?</string>
     <string name="ClearSearch">Clear search history?</string>
     <string name="ClearButton">Clear</string>
@@ -142,15 +142,15 @@
     <!--edit video view-->
     <!--bot-->
     <!--button titles-->
-    <string name="Done">Done</string>
+    <string name="Done">Выполнено</string>
     <string name="Save">Save</string>
-    <string name="Cancel">Отмена</string>
+    <string name="Cancel">Cancel</string>
     <string name="Edit">Edit</string>
     <string name="Send">Send</string>
     <string name="Delete">Delete</string>
     <string name="Set">Set</string>
     <string name="OK">OK</string>
-    <string name="Crop">Обрезать</string>
+    <string name="Crop">КАДРИРОВАТЬ</string>
     <!--messages-->
     <string name="AttachPhoto">Photo</string>
     <string name="AttachVideo">Video</string>
@@ -159,10 +159,11 @@
     <string name="AttachAudio">Voice message</string>
     <!--Alert messages-->
     <string name="Loading">Loading...</string>
-    <string name="AreYouSure">Вы уверены??</string>
+    <string name="AreYouSure">Вы уверены?</string>
     <string name="AreYouSureLogout">Are you sure you want to log out?\n\nNote that you can seamlessly use Picca on all your devices at once.\n\nRemember, logging out kills all your Secret Chats.</string>
-    <string name="AreYouSureDeleteAlbum">Вы уверены, что хотите удалить выбранные альбомы с содержащимися в них фотографиями?</string>
+    <string name="AreYouSureDeleteAlbum">Вы уверены, что хотите удалить выбранные альбомы с содержимым?</string>
     <string name="AreYouSureDeletePhotos">Вы уверены, что хотите удалить выбранные фотографии?</string>
+    <string name="DeleteQuestion">Удалить?</string>
     <!--permissions-->
     <!--Intro view-->
     <string name="Page1Title">Picca</string>
@@ -193,5 +194,4 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">h:mm a</string>
     <string name="formatDateAtTime">%1$s at %2$s</string>
-    <string name="DeleteQuestion">Удалить?</string>
 </resources>

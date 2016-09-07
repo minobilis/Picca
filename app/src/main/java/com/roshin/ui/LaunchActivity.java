@@ -185,6 +185,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                 }
             }
         });
+        actionBarLayout.rebuildAllFragmentViews(false);
     }
 
     @Override

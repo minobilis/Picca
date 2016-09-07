@@ -11,6 +11,7 @@ package com.roshin.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
@@ -208,6 +210,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
 
     @Override
     public View createView(Context context) {
+        if (Build.VERSION.SDK_INT <= 19){
+            actionBar.setOccupyStatusBar(true);
+        }
+
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAddToContainer(false);
         extraHeight = 88;
@@ -303,6 +309,11 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                             editor.commit();
                             if (listView != null) {
                                 listView.invalidateViews();
+                                try {
+                                    ((LaunchActivity)getParentActivity()).fixLayout();
+                                } catch (Exception e){
+                                    FileLog.e("picca", e);
+                                }
                             }
                         }
                     });
