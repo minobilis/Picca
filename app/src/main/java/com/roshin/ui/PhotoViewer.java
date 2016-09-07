@@ -1056,7 +1056,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                     if (imageMoveAnimation != null || changeModeAnimation != null) {
                         return;
                     }
-                    cropItem.setVisibility(View.GONE);
+                    //.setVisibility(View.GONE);
                     //tuneItem.setVisibility(View.GONE);
                     captionItem.setVisibility(View.GONE);
                     captionDoneItem.setVisibility(View.VISIBLE);
@@ -1110,7 +1110,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         captionDoneItem = menu.addItemWithWidth(gallery_menu_caption_done, R.drawable.ic_done, AndroidUtilities.dp(56));
         captionItem = menu.addItemWithWidth(gallery_menu_caption, R.drawable.photo_text, AndroidUtilities.dp(56));
-        cropItem = menu.addItemWithWidth(gallery_menu_crop, R.drawable.photo_crop, AndroidUtilities.dp(56));
+        //cropItem = menu.addItemWithWidth(gallery_menu_crop, R.drawable.photo_crop, AndroidUtilities.dp(56));
         //tuneItem = menu.addItemWithWidth(gallery_menu_tune, R.drawable.photo_tools, AndroidUtilities.dp(56));
 
         bottomLayout = new FrameLayout(actvityContext);
@@ -1310,7 +1310,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 placeProvider.setPhotoChecked(currentIndex);
             }
         }
-        cropItem.setVisibility(View.VISIBLE);
+        //cropItem.setVisibility(View.VISIBLE);
         captionItem.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= 16) {
             //tuneItem.setVisibility(View.VISIBLE);
@@ -1861,7 +1861,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         menuItem.hideSubItem(gallery_menu_share);
         menuItem.hideSubItem(gallery_menu_openin);
         actionBar.setTranslationY(0);
-        cropItem.setVisibility(View.GONE);
+        //cropItem.setVisibility(View.GONE);
         captionItem.setVisibility(View.GONE);
         captionDoneItem.setVisibility(View.GONE);
         captionEditText.setVisibility(View.GONE);
@@ -1919,7 +1919,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             bottomLayout.setVisibility(View.GONE);
             canShowBottom = false;
             Object obj = imagesArrLocals.get(index);
-            cropItem.setVisibility(obj instanceof MediaController.PhotoEntry || obj instanceof MediaController.SearchImage && ((MediaController.SearchImage) obj).type == 0 ? View.VISIBLE : View.GONE);
+            //cropItem.setVisibility(obj instanceof MediaController.PhotoEntry || obj instanceof MediaController.SearchImage && ((MediaController.SearchImage) obj).type == 0 ? View.VISIBLE : View.GONE);
 
             if (Build.VERSION.SDK_INT >= 16) {
                 //tuneItem.setVisibility(cropItem.getVisibility());

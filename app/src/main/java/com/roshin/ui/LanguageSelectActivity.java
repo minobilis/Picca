@@ -11,6 +11,7 @@ package com.roshin.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,6 +54,10 @@ public class LanguageSelectActivity extends BaseFragment {
 
     @Override
     public View createView(Context context) {
+        if (Build.VERSION.SDK_INT <= 19){
+            actionBar.setOccupyStatusBar(true);
+        }
+
         searching = false;
         searchWas = false;
 
