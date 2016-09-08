@@ -297,6 +297,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                     final NumberPicker numberPicker = new NumberPicker(getParentActivity());
                     numberPicker.setMinValue(12);
                     numberPicker.setMaxValue(20);
+                    SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+                    int albumTextSize = preferences.getInt("album_font_size", AndroidUtilities.isTablet() ? 15 : 13);
+                    numberPicker.setValue(albumTextSize);
+
 
                     builder.setView(numberPicker);
                     builder.setNegativeButton(LocaleController.getString("Done", R.string.Done), new DialogInterface.OnClickListener() {

@@ -2844,10 +2844,11 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     }
 
     private int getContainerViewHeight(int mode) {
-        int height = AndroidUtilities.displaySize.y;
-
-        if (Build.VERSION.SDK_INT >= 19) {
-            height += AndroidUtilities.navigationBarHeight;
+        int height;
+        if (Build.VERSION.SDK_INT >= 17) {
+            height = AndroidUtilities.displayRealSize.y;
+        } else{
+            height = AndroidUtilities.displaySize.y;
         }
 
         if (mode == 1) {

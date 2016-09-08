@@ -802,6 +802,7 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
     }
 
     private void fixLayout() {
+        AndroidUtilities.checkDisplaySize();
         if (listView != null) {
             ViewTreeObserver obs = listView.getViewTreeObserver();
             obs.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
