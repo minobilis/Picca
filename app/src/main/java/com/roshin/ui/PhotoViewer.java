@@ -92,6 +92,9 @@ import java.util.Random;
 @SuppressWarnings("unchecked")
 public class PhotoViewer implements NotificationCenter.NotificationCenterDelegate, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
+    public static final float DOUBLE_TAP_ZOOM_NO = 1.0f;
+    public static final float DOUBLE_TAP_ZOOM_3X = 3.0f;
+    public static final float DOUBLE_TAP_ZOOM_10X = 10.0f;
     private int classGuid;
     private PhotoViewerProvider placeProvider;
     private boolean isVisible;
@@ -3425,13 +3428,15 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         if (!canZoom || scale == 1.0f && (translationY != 0 || translationX != 0)) {
             return false;
         }
+
         if (animationStartTime != 0 || animationInProgress != 0) {
             return false;
         }
-        if (scale == 1.0f) {
-            float atx = (e.getX() - getContainerViewWidth() / 2) - ((e.getX() - getContainerViewWidth() / 2) - translationX) * (3.0f / scale);
-            float aty = (e.getY() - getContainerViewHeight() / 2) - ((e.getY() - getContainerViewHeight() / 2) - translationY) * (3.0f / scale);
-            updateMinMax(3.0f);
+
+        if (scale == DOUBLE_TAP_ZOOM_NO) {
+            float atx = (e.getX() - getContainerViewWidth() / 2) - ((e.getX() - getContainerViewWidth() / 2) - translationX) * (DOUBLE_TAP_ZOOM_3X / scale);
+            float aty = (e.getY() - getContainerViewHeight() / 2) - ((e.getY() - getContainerViewHeight() / 2) - translationY) * (DOUBLE_TAP_ZOOM_3X / scale);
+            updateMinMax(DOUBLE_TAP_ZOOM_3X);
             if (atx < minX) {
                 atx = minX;
             } else if (atx > maxX) {
@@ -3442,7 +3447,24 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             } else if (aty > maxY) {
                 aty = maxY;
             }
-            animateTo(3.0f, atx, aty, true);
+            animateTo(DOUBLE_TAP_ZOOM_3X, atx, aty, true);
+
+        } else if (scale == DOUBLE_TAP_ZOOM_3X) {
+            float atx = (e.getX() - getContainerViewWidth() / 2) - ((e.getX() - getContainerViewWidth() / 2) - translationX) * (DOUBLE_TAP_ZOOM_10X / scale);
+            float aty = (e.getY() - getContainerViewHeight() / 2) - ((e.getY() - getContainerViewHeight() / 2) - translationY) * (DOUBLE_TAP_ZOOM_10X / scale);
+            updateMinMax(DOUBLE_TAP_ZOOM_10X);
+            if (atx < minX) {
+                atx = minX;
+            } else if (atx > maxX) {
+                atx = maxX;
+            }
+            if (aty < minY) {
+                aty = minY;
+            } else if (aty > maxY) {
+                aty = maxY;
+            }
+            animateTo(DOUBLE_TAP_ZOOM_10X, atx, aty, true);
+
         } else {
             animateTo(1.0f, 0, 0, true);
         }
