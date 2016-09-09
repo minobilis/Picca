@@ -767,40 +767,6 @@ public class LocaleController {
         return "LOC_ERR";
     }
 
-    public static String formatDateOnline(long date) {
-        try {
-            Calendar rightNow = Calendar.getInstance();
-            int day = rightNow.get(Calendar.DAY_OF_YEAR);
-            int year = rightNow.get(Calendar.YEAR);
-            rightNow.setTimeInMillis(date * 1000);
-            int dateDay = rightNow.get(Calendar.DAY_OF_YEAR);
-            int dateYear = rightNow.get(Calendar.YEAR);
-
-            if (dateDay == day && year == dateYear) {
-                return String.format("%s %s %s", LocaleController.getString("LastSeen", R.string.LastSeen), LocaleController.getString("TodayAt", R.string.TodayAt), getInstance().formatterDay.format(new Date(date * 1000)));
-                /*int diff = (int) (ConnectionsManager.getInstance().getCurrentTime() - date) / 60;
-                if (diff < 1) {
-                    return LocaleController.getString("LastSeenNow", R.string.LastSeenNow);
-                } else if (diff < 60) {
-                    return LocaleController.formatPluralString("LastSeenMinutes", diff);
-                } else {
-                    return LocaleController.formatPluralString("LastSeenHours", (int) Math.ceil(diff / 60.0f));
-                }*/
-            } else if (dateDay + 1 == day && year == dateYear) {
-                return String.format("%s %s %s", LocaleController.getString("LastSeen", R.string.LastSeen), LocaleController.getString("YesterdayAt", R.string.YesterdayAt), getInstance().formatterDay.format(new Date(date * 1000)));
-            } else if (year == dateYear) {
-                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, getInstance().formatterMonth.format(new Date(date * 1000)), getInstance().formatterDay.format(new Date(date * 1000)));
-                return String.format("%s %s", LocaleController.getString("LastSeenDate", R.string.LastSeenDate), format);
-            } else {
-                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, getInstance().formatterYear.format(new Date(date * 1000)), getInstance().formatterDay.format(new Date(date * 1000)));
-                return String.format("%s %s", LocaleController.getString("LastSeenDate", R.string.LastSeenDate), format);
-            }
-        } catch (Exception e) {
-            FileLog.e("picca", e);
-        }
-        return "LOC_ERR";
-    }
-
     private FastDateFormat createFormatter(Locale locale, String format, String defaultFormat) {
         if (format == null || format.length() == 0) {
             format = defaultFormat;
@@ -891,39 +857,6 @@ public class LocaleController {
             return String.format(Locale.US, "%dM", number);
         } else {
             return String.format(Locale.US, "%d%s", number, K);
-        }
-    }
-
-    public static String formatUserStatus(TLRPC.User user) {
-        if (user != null && user.status != null && user.status.expires == 0) {
-            if (user.status instanceof TLRPC.TL_userStatusRecently) {
-                user.status.expires = -100;
-            } else if (user.status instanceof TLRPC.TL_userStatusLastWeek) {
-                user.status.expires = -101;
-            } else if (user.status instanceof TLRPC.TL_userStatusLastMonth) {
-                user.status.expires = -102;
-            }
-        }
-
-        if (user == null || user.status == null || user.status.expires == 0 || user instanceof TLRPC.TL_userEmpty) {
-            return getString("ALongTimeAgo", R.string.ALongTimeAgo);
-        } else {
-            int currentTime = ConnectionsManager.getInstance().getCurrentTime();
-            if (user.status.expires > currentTime) {
-                return getString("Online", R.string.Online);
-            } else {
-                if (user.status.expires == -1) {
-                    return getString("Invisible", R.string.Invisible);
-                } else if (user.status.expires == -100) {
-                    return getString("Lately", R.string.Lately);
-                } else if (user.status.expires == -101) {
-                    return getString("WithinAWeek", R.string.WithinAWeek);
-                } else if (user.status.expires == -102) {
-                    return getString("WithinAMonth", R.string.WithinAMonth);
-                }  else {
-                    return formatDateOnline(user.status.expires);
-                }
-            }
         }
     }
 

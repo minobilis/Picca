@@ -450,55 +450,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                     final boolean maskValues[] = new boolean[6];
                     BottomSheet.Builder builder = new BottomSheet.Builder(getParentActivity());
 
-                    int mask = 0;
-                    if (i == mobileDownloadRow) {
-                        mask = MediaController.getInstance().mobileDataDownloadMask;
-                    } else if (i == wifiDownloadRow) {
-                        mask = MediaController.getInstance().wifiDownloadMask;
-                    } else if (i == roamingDownloadRow) {
-                        mask = MediaController.getInstance().roamingDownloadMask;
-                    }
-
                     builder.setApplyTopPadding(false);
                     builder.setApplyBottomPadding(false);
                     LinearLayout linearLayout = new LinearLayout(getParentActivity());
                     linearLayout.setOrientation(LinearLayout.VERTICAL);
-                    for (int a = 0; a < 6; a++) {
-                        String name = null;
-                        if (a == 0) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_PHOTO) != 0;
-                            name = LocaleController.getString("AttachPhoto", R.string.AttachPhoto);
-                        } else if (a == 1) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_AUDIO) != 0;
-                            name = LocaleController.getString("AttachAudio", R.string.AttachAudio);
-                        } else if (a == 2) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_VIDEO) != 0;
-                            name = LocaleController.getString("AttachVideo", R.string.AttachVideo);
-                        } else if (a == 3) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_DOCUMENT) != 0;
-                            name = LocaleController.getString("AttachDocument", R.string.AttachDocument);
-                        } else if (a == 4) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_MUSIC) != 0;
-                            name = LocaleController.getString("AttachMusic", R.string.AttachMusic);
-                        } else if (a == 5) {
-                            maskValues[a] = (mask & MediaController.AUTODOWNLOAD_MASK_GIF) != 0;
-                            name = LocaleController.getString("AttachGif", R.string.AttachGif);
-                        }
-                        CheckBoxCell checkBoxCell = new CheckBoxCell(getParentActivity());
-                        checkBoxCell.setTag(a);
-                        checkBoxCell.setBackgroundResource(R.drawable.list_selector);
-                        linearLayout.addView(checkBoxCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
-                        checkBoxCell.setText(name, "", maskValues[a], true);
-                        checkBoxCell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CheckBoxCell cell = (CheckBoxCell) v;
-                                int num = (Integer) cell.getTag();
-                                maskValues[num] = !maskValues[num];
-                                cell.setChecked(maskValues[num], true);
-                            }
-                        });
-                    }
                     BottomSheet.BottomSheetCell cell = new BottomSheet.BottomSheetCell(getParentActivity(), 1);
                     cell.setBackgroundResource(R.drawable.list_selector);
                     cell.setTextAndIcon(LocaleController.getString("Save", R.string.Save).toUpperCase(), 0);
@@ -975,7 +930,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 } else if (i == contactsReimportRow) {
                     textCell.setText(LocaleController.getString("ImportContacts", R.string.ImportContacts), true);
                 } else if (i == stickersRow) {
-                    textCell.setText(LocaleController.getString("Stickers", R.string.Stickers), true);
+
                 } else if (i == cacheRow) {
                     textCell.setText(LocaleController.getString("CacheSettings", R.string.CacheSettings), true);
                 } else if (i == privacyPolicyRow) {
@@ -1016,7 +971,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 } else if (i == mediaDownloadSection2) {
                     ((HeaderCell) view).setText(LocaleController.getString("AutomaticMediaDownload", R.string.AutomaticMediaDownload));
                 } else if (i == numberSectionRow) {
-                    ((HeaderCell) view).setText(LocaleController.getString("Info", R.string.Info));
+
                 }
             } else if (type == 5) {
                 if (view == null) {
@@ -1066,60 +1021,41 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                     }
                     String text = "";
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_PHOTO) != 0) {
-                        text += LocaleController.getString("AttachPhoto", R.string.AttachPhoto);
                     }
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_AUDIO) != 0) {
                         if (text.length() != 0) {
                             text += ", ";
                         }
-                        text += LocaleController.getString("AttachAudio", R.string.AttachAudio);
                     }
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_VIDEO) != 0) {
                         if (text.length() != 0) {
                             text += ", ";
                         }
-                        text += LocaleController.getString("AttachVideo", R.string.AttachVideo);
                     }
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_DOCUMENT) != 0) {
                         if (text.length() != 0) {
                             text += ", ";
                         }
-                        text += LocaleController.getString("AttachDocument", R.string.AttachDocument);
                     }
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_MUSIC) != 0) {
                         if (text.length() != 0) {
                             text += ", ";
                         }
-                        text += LocaleController.getString("AttachMusic", R.string.AttachMusic);
+
                     }
                     if ((mask & MediaController.AUTODOWNLOAD_MASK_GIF) != 0) {
                         if (text.length() != 0) {
                             text += ", ";
                         }
-                        text += LocaleController.getString("AttachGif", R.string.AttachGif);
                     }
                     if (text.length() == 0) {
                         text = LocaleController.getString("NoMediaAutoDownload", R.string.NoMediaAutoDownload);
                     }
                     textCell.setTextAndValue(value, text, true);
                 } else if (i == numberRow) {
-                    TLRPC.User user = UserConfig.getCurrentUser();
-                    String value;
-                    if (user != null && user.phone != null && user.phone.length() != 0) {
-                        value = "";
-                    } else {
-                        value = LocaleController.getString("NumberUnknown", R.string.NumberUnknown);
-                    }
-                    textCell.setTextAndValue(value, LocaleController.getString("Phone", R.string.Phone), true);
+
                 } else if (i == usernameRow) {
-                    TLRPC.User user = UserConfig.getCurrentUser();
-                    String value;
-                    if (user != null && user.username != null && user.username.length() != 0) {
-                        value = "@" + user.username;
-                    } else {
-                        value = LocaleController.getString("UsernameEmpty", R.string.UsernameEmpty);
-                    }
-                    textCell.setTextAndValue(value, LocaleController.getString("Username", R.string.Username), false);
+
                 }
             }
             return view;

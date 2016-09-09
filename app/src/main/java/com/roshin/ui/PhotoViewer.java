@@ -2004,11 +2004,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
                 caption = searchImage.caption;
             }
-            if (fromCamera) {
-                actionBar.setTitle(LocaleController.getString("AttachPhoto", R.string.AttachPhoto));
-            } else {
-                actionBar.setTitle(LocaleController.formatString("Of", R.string.Of, currentIndex + 1, imagesArrLocals.size()));
-            }
+            actionBar.setTitle(LocaleController.formatString("Of", R.string.Of, currentIndex + 1, imagesArrLocals.size()));
 
             setCurrentCaption(caption);
             updateCaptionTextForCurrentPhoto(object);

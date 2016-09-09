@@ -17,7 +17,6 @@
     <!--channels-->
     <!--broadcasts-->
     <!--audio view-->
-    <string name="AttachMusic">Music</string>
     <!--documents view-->
     <!--chat view-->
     <string name="Invisible">invisible</string>
@@ -28,29 +27,14 @@
     <string name="TodayAt">at</string>
     <string name="YesterdayAt">yesterday at</string>
     <string name="Online">online</string>
-    <string name="LastSeen">last seen</string>
-    <string name="LastSeenDate">last seen</string>
-    <string name="Lately">last seen recently</string>
-    <string name="WithinAWeek">last seen within a week</string>
-    <string name="WithinAMonth">last seen within a month</string>
-    <string name="ALongTimeAgo">last seen a long time ago</string>
     <!--group create view-->
     <!--set admins view-->
     <!--group info view-->
     <string name="SETTINGS">Settings</string>
     <!--contact info view-->
-    <string name="MessageLifetime">Self-Destruct Timer</string>
-    <string name="ShortMessageLifetimeForever">Off</string>
-    <string name="NumberUnknown">Unknown</string>
-    <string name="Info">Info</string>
-    <string name="Phone">Phone</string>
     <!--usernames-->
-    <string name="Username">Username</string>
-    <string name="UsernameEmpty">None</string>
     <!--stickers view-->
-    <string name="Stickers">Stickers</string>
     <!--settings view-->
-    <string name="TextSize">Messages Text Size</string>
     <string name="AlbumCaptionTextSize">Album\'s Caption Text Size</string>
     <string name="AskAQuestion">Ask a Question</string>
     <string name="EnableAnimations">Enable Animations</string>
@@ -152,11 +136,6 @@
     <string name="OK">OK</string>
     <string name="Crop">CROP</string>
     <!--messages-->
-    <string name="AttachPhoto">Photo</string>
-    <string name="AttachVideo">Video</string>
-    <string name="AttachGif">GIF</string>
-    <string name="AttachDocument">File</string>
-    <string name="AttachAudio">Voice message</string>
     <!--Alert messages-->
     <string name="Loading">Loading...</string>
     <string name="AreYouSure">Are you sure?</string>
