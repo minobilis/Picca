@@ -182,8 +182,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
             }
         });
 
-        //menu.addItem(DELETE_ALBUMS_COMMAND, R.drawable.ic_ab_fwd_delete);
-
         ActionBarMenu menu = actionBar.createMenu();
         ActionBarMenuItem extendedMenu = menu.addItem(EXTRA_MENU, R.drawable.ic_ab_other);
         extendedMenu.addSubItem(OPEN_SETTINGS_COMMAND, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings);

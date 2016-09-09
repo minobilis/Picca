@@ -37,7 +37,6 @@ import com.roshin.gallery.UserConfig;
 import com.roshin.ui.ActionBar.ActionBarLayout;
 import com.roshin.ui.ActionBar.BaseFragment;
 import com.roshin.ui.ActionBar.DrawerLayoutContainer;
-import com.roshin.ui.ActionBar.Theme;
 import com.roshin.ui.Adapters.DrawerLayoutAdapter;
 import com.roshin.ui.Components.LayoutHelper;
 

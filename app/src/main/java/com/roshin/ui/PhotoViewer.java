@@ -938,7 +938,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         actionBar = new ActionBar(activity);
         actionBar.setBackgroundColor(Theme.ACTION_BAR_PHOTO_VIEWER_COLOR);
-        //actionBar.setOccupyStatusBar(true);
         actionBar.setItemsBackgroundColor(Theme.ACTION_BAR_WHITE_SELECTOR_COLOR);
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setTitle(LocaleController.formatString("Of", R.string.Of, 1, 1));
