@@ -173,4 +173,14 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">h:mm a</string>
     <string name="formatDateAtTime">%1$s at %2$s</string>
+    <string name="FileNameCopied">Filename is copied to clipboard.</string>
+    <string name="FileName">Filename</string>
+    <string name="DateTaken">Date taken</string>
+    <string name="DateTakenCopiedToClipboard">Date taken is copied to clipboard</string>
+    <string name="FilePathCopied">Full file path is copied to clipboard</string>
+    <string name="TimeTaken">Time taken</string>
+    <string name="TimeTakenCopied">Time taken is copied to clipboard</string>
+    <string name="FileSize">File size</string>
+    <string name="FileSizeCopied">File size is copied to clipboard</string>
+    <string name="Mpixels">Mpix</string>
 </resources>

@@ -39,6 +39,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.roshin.Picca.R;
@@ -476,6 +477,77 @@ public class BottomSheet extends Dialog {
             } else {
                 imageView.setVisibility(INVISIBLE);
                 textView.setPadding(0, 0, 0, 0);
+            }
+        }
+    }
+
+    public static class BottomSheetInfoCell extends FrameLayout {
+
+        private ImageView imageView;
+        private TextView upperTextView;
+        private TextView underTextView;
+
+        public BottomSheetInfoCell(Context context) {
+            super(context);
+
+            setBackgroundResource(R.drawable.list_selector);
+            setPadding(AndroidUtilities.dp(6), 0, AndroidUtilities.dp(16), 0);
+
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            addView(imageView, LayoutHelper.createFrame(36, 36, Gravity.CENTER_VERTICAL | Gravity.LEFT));
+
+            upperTextView = new TextView(context);
+            upperTextView.setLines(1);
+            upperTextView.setSingleLine(true);
+            upperTextView.setEllipsize(TextUtils.TruncateAt.END);
+            upperTextView.setGravity(Gravity.CENTER_VERTICAL);
+            upperTextView.setTextColor(0xff212121);
+            upperTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            upperTextView.setPadding(AndroidUtilities.dp(45), 0, 0, 0);
+            upperTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+
+            underTextView = new TextView(context);
+            underTextView.setLines(1);
+            underTextView.setSingleLine(true);
+            underTextView.setEllipsize(TextUtils.TruncateAt.END);
+            underTextView.setGravity(Gravity.CENTER_VERTICAL);
+            underTextView.setTextColor(0xff737373);
+            underTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            underTextView.setPadding(AndroidUtilities.dp(45), 0, 0, 0);
+            underTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+
+            LinearLayout textArea = new LinearLayout(context);
+            textArea.setOrientation(LinearLayout.VERTICAL);
+            textArea.addView(upperTextView);
+            textArea.addView(underTextView);
+            addView(textArea, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, (Gravity.LEFT | Gravity.CENTER_VERTICAL)));
+
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(48), MeasureSpec.EXACTLY));
+        }
+
+        public void setTextColor(int color) {
+            upperTextView.setTextColor(color);
+        }
+
+        public void setGravity(int gravity) {
+            upperTextView.setGravity(gravity);
+        }
+
+        public void setTextAndIcon(CharSequence upperText, String underText, int icon) {
+            upperTextView.setText(upperText);
+            underTextView.setText(underText);
+            if (icon != 0) {
+                imageView.setImageResource(icon);
+                imageView.setVisibility(VISIBLE);
+            } else {
+                imageView.setVisibility(INVISIBLE);
+                upperTextView.setPadding(0, 0, 0, 0);
+                underTextView.setPadding(0, 0, 0, 0);
             }
         }
     }

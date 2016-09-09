@@ -15,11 +15,16 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -46,9 +51,11 @@ import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
@@ -65,12 +72,14 @@ import com.roshin.gallery.UserConfig;
 import com.roshin.gallery.Utilities;
 import com.roshin.gallery.query.SharedMediaQuery;
 import com.roshin.gallery.support.widget.LinearLayoutManager;
+import com.roshin.gallery.time.DateParser;
 import com.roshin.tgnet.ConnectionsManager;
 import com.roshin.tgnet.TLRPC;
 import com.roshin.ui.ActionBar.ActionBar;
 import com.roshin.ui.ActionBar.ActionBarMenu;
 import com.roshin.ui.ActionBar.ActionBarMenuItem;
 import com.roshin.ui.ActionBar.BaseFragment;
+import com.roshin.ui.ActionBar.BottomSheet;
 import com.roshin.ui.ActionBar.Theme;
 import com.roshin.ui.Components.AnimatedFileDrawable;
 import com.roshin.ui.Components.ClippingImageView;
@@ -83,8 +92,11 @@ import com.roshin.ui.Components.RecyclerListView;
 import com.roshin.ui.Components.SizeNotifierFrameLayoutPhoto;
 
 import java.io.File;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
@@ -95,6 +107,20 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     public static final float DOUBLE_TAP_ZOOM_NO = 1.0f;
     public static final float DOUBLE_TAP_ZOOM_3X = 3.0f;
     public static final float DOUBLE_TAP_ZOOM_10X = 10.0f;
+
+    private final static int gallery_menu_save = 10;
+    private final static int gallery_menu_showall = 20;
+    private final static int gallery_menu_send = 30;
+    private final static int gallery_menu_crop = 40;
+    private final static int gallery_menu_delete = 60;
+    private final static int gallery_menu_tune = 70;
+    private final static int gallery_menu_caption = 80;
+    private final static int gallery_menu_caption_done = 90;
+    private final static int gallery_menu_share = 100;
+    private final static int gallery_menu_openin = 110;
+    private static final int SHOW_DETAILS = 99;
+    public static final int EXTRA_BUTTON = 999;
+
     private int classGuid;
     private PhotoViewerProvider placeProvider;
     private boolean isVisible;
@@ -126,7 +152,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private AnimatorSet currentActionBarAnimation;
     private PhotoCropView photoCropView;
     private PhotoFilterView photoFilterView;
-    private AlertDialog visibleDialog;
     private TextView captionTextView;
     private TextView captionTextViewOld;
     private TextView captionTextViewNew;
@@ -227,21 +252,12 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private ArrayList<Object> imagesArrLocals = new ArrayList<>();
     private TLRPC.FileLocation currentUserAvatarLocation = null;
 
-    private final static int gallery_menu_save = 1;
-    private final static int gallery_menu_showall = 2;
-    private final static int gallery_menu_send = 3;
-    private final static int gallery_menu_crop = 4;
-    private final static int gallery_menu_delete = 6;
-    private final static int gallery_menu_tune = 7;
-    private final static int gallery_menu_caption = 8;
-    private final static int gallery_menu_caption_done = 9;
-    private final static int gallery_menu_share = 10;
-    private final static int gallery_menu_openin = 11;
-
     private final static int PAGE_SPACING = AndroidUtilities.dp(30);
 
     private static DecelerateInterpolator decelerateInterpolator = null;
     private static Paint progressPaint = null;
+
+    protected Dialog visibleDialog = null;
 
     private class BackgroundDrawable extends ColorDrawable {
 
@@ -858,6 +874,140 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
     }
 
+    public void showDetails(){
+        Object object = imagesArrLocals.get(currentIndex);
+        if (object instanceof MediaController.PhotoEntry) {
+            MediaController.PhotoEntry entry = (MediaController.PhotoEntry) object;
+            final String fullPath = entry.path;
+            final String filename = fullPath.substring(fullPath.lastIndexOf("/") + 1);
+            final String dateTaken = new SimpleDateFormat("MM/dd/yyyy").format(new Date(entry.dateTaken)); // TODO: 10.09.2016 international date and time formatting
+            final String timeTaken = new SimpleDateFormat("HH:mm").format(new Date(entry.dateTaken));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(fullPath, options);
+            int imageWidth = options.outWidth;
+            int imageHeight = options.outHeight;
+            String imageType = options.outMimeType;
+
+            String megaPixels = "";
+            float MPixels = imageWidth * imageHeight / 1000000f;
+            if (MPixels >= 0.05f) {
+                MPixels = Math.round(MPixels * 20);
+                MPixels /= 20;
+                megaPixels = NumberFormat.getInstance().format(MPixels) + " " + LocaleController.getString("Mpixels", R.string.Mpixels) + "    ";
+            }
+
+            String fileSize;
+            File file = new File(fullPath);
+            long Filesize = file.length()/1024;
+            if (Filesize >= 1024) {
+                fileSize = Filesize / 1024 + " Mb";
+            } else {
+                fileSize = Filesize + " Kb";
+            }
+
+            BottomSheet.Builder builder = new BottomSheet.Builder(parentActivity, false);
+            builder.setApplyTopPadding(false);
+            builder.setApplyBottomPadding(false);
+            LinearLayout linearLayout = new LinearLayout(parentActivity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+            BottomSheet.BottomSheetInfoCell fileCell = new BottomSheet.BottomSheetInfoCell(parentActivity);
+            fileCell.setBackgroundResource(R.drawable.list_selector);
+            fileCell.setTextAndIcon(filename, fullPath, R.drawable.ic_photo_grey_24dp);
+            fileCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    copyToClipboard(LocaleController.getString("FileName", R.string.FileName), filename);
+                    Toast.makeText(parentActivity, LocaleController.getString("FileNameCopied", R.string.FileNameCopied), Toast.LENGTH_SHORT).show();
+                }
+            });
+            fileCell.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    copyToClipboard(LocaleController.getString("FileName", R.string.FileName), filename);
+                    Toast.makeText(parentActivity, LocaleController.getString("FilePathCopied", R.string.FilePathCopied), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+
+            BottomSheet.BottomSheetInfoCell dateCell = new BottomSheet.BottomSheetInfoCell(parentActivity);
+            dateCell.setBackgroundResource(R.drawable.list_selector);
+            dateCell.setTextAndIcon(dateTaken, timeTaken,  R.drawable.ic_date_range_grey_24dp);
+            dateCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    copyToClipboard(LocaleController.getString("DateTaken", R.string.DateTaken), dateTaken);
+                    Toast.makeText(parentActivity, LocaleController.getString("DateTakenCopiedToClipboard", R.string.DateTakenCopiedToClipboard), Toast.LENGTH_SHORT).show();
+                }
+            });
+            dateCell.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    copyToClipboard(LocaleController.getString("TimeTaken", R.string.TimeTaken), filename);
+                    Toast.makeText(parentActivity, LocaleController.getString("TimeTakenCopied", R.string.TimeTakenCopied), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+            BottomSheet.BottomSheetInfoCell imageCell = new BottomSheet.BottomSheetInfoCell(parentActivity);
+            imageCell.setBackgroundResource(R.drawable.list_selector);
+            imageCell.setTextAndIcon(fileSize, megaPixels + imageWidth + "x" + imageHeight + "     " + imageType,  R.drawable.ic_action_ic_insert_drive_file_black_24dp);
+            imageCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    copyToClipboard(LocaleController.getString("FileSize", R.string.FileSize), dateTaken);
+                    Toast.makeText(parentActivity, LocaleController.getString("FileSizeCopied", R.string.FileSizeCopied), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            linearLayout.addView(fileCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 70));
+            linearLayout.addView(dateCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 70));
+            linearLayout.addView(imageCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 70));
+
+            builder.setCustomView(linearLayout);
+            showDialog(builder.create());
+        }
+    }
+
+    private void copyToClipboard(String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager)
+                parentActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    public Dialog showDialog(Dialog dialog) {
+        if (dialog == null) {
+            return null;
+        }
+        try {
+            if (visibleDialog != null) {
+                visibleDialog.dismiss();
+                visibleDialog = null;
+            }
+        } catch (Exception e) {
+            FileLog.e("picca", e);
+        }
+        try {
+            visibleDialog = dialog;
+            visibleDialog.setCanceledOnTouchOutside(true);
+            visibleDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    visibleDialog = null;
+                }
+            });
+            visibleDialog.show();
+            return visibleDialog;
+        } catch (Exception e) {
+            FileLog.e("picca", e);
+        }
+        return null;
+    }
+
     public void setParentActivity(final Activity activity) {
         if (parentActivity == activity) {
             return;
@@ -949,140 +1099,155 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
-                if (id == -1) {
-                    if (needCaptionLayout && (captionEditText.isPopupShowing() || captionEditText.isKeyboardVisible())) {
-                        closeCaptionEnter(false);
-                        return;
-                    }
-                    closePhoto(true, false);
-                } else if (id == gallery_menu_save) {
-                    if (Build.VERSION.SDK_INT >= 23 && parentActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        parentActivity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 4);
-                        return;
-                    }
-
-                    File f = null;
-                    if (currentFileLocation != null) {
-                        f = FileLoader.getPathToAttach(currentFileLocation, avatarsDialogId != 0);
-                    }
-
-                    if (f != null && f.exists()) {
-                        MediaController.saveFile(f.toString(), parentActivity, 1 , null, null);
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
-                        builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
-                        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
-                        builder.setMessage(LocaleController.getString("PleaseDownload", R.string.PleaseDownload));
-                        showAlertDialog(builder);
-                    }
-                } else if (id == gallery_menu_showall) {
-                    if (opennedFromMedia) {
+                switch (id){
+                    case -1:
+                        if (needCaptionLayout && (captionEditText.isPopupShowing() || captionEditText.isKeyboardVisible())) {
+                            closeCaptionEnter(false);
+                            return;
+                        }
                         closePhoto(true, false);
-                    } else if (currentDialogId != 0) {
-                        disableShowCheck = true;
-                        closePhoto(false, false);
-                        Bundle args2 = new Bundle();
-                        args2.putLong("dialog_id", currentDialogId);
-                    }
-                } else if (id == gallery_menu_send) {
+                        break;
+                    case gallery_menu_save:
+                        if (Build.VERSION.SDK_INT >= 23 && parentActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            parentActivity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 4);
+                            return;
+                        }
 
-                } else if (id == gallery_menu_crop) {
-                    switchToEditMode(1);
-                } else if (id == gallery_menu_tune) {
-                    switchToEditMode(2);
-                } else if (id == gallery_menu_delete) {
-                    if (parentActivity == null) {
-                        return;
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                        File f = null;
+                        if (currentFileLocation != null) {
+                            f = FileLoader.getPathToAttach(currentFileLocation, avatarsDialogId != 0);
+                        }
 
-                    builder.setMessage(LocaleController.formatString("AreYouSureDeletePhoto", R.string.AreYouSureDeletePhoto));
+                        if (f != null && f.exists()) {
+                            MediaController.saveFile(f.toString(), parentActivity, 1 , null, null);
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                            builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
+                            builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+                            builder.setMessage(LocaleController.getString("PleaseDownload", R.string.PleaseDownload));
+                            showAlertDialog(builder);
+                        }
+                        break;
+                    case gallery_menu_showall:
+                        if (opennedFromMedia) {
+                            closePhoto(true, false);
+                        } else if (currentDialogId != 0) {
+                            disableShowCheck = true;
+                            closePhoto(false, false);
+                            Bundle args2 = new Bundle();
+                            args2.putLong("dialog_id", currentDialogId);
+                        }
+                        break;
+                    case gallery_menu_send:
+                        break;
+                    case gallery_menu_crop:
+                        switchToEditMode(1);
+                        break;
+                    case gallery_menu_tune:
+                        switchToEditMode(2);
+                        break;
+                    case gallery_menu_delete:
+                        if (parentActivity == null) {
+                            return;
+                        }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
 
-                    builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
-                    builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (!imagesArr.isEmpty()) {
-                                if (currentIndex < 0 || currentIndex >= imagesArr.size()) {
-                                    return;
-                                }
+                        builder.setMessage(LocaleController.formatString("AreYouSureDeletePhoto", R.string.AreYouSureDeletePhoto));
 
-                            } else if (!avatarsArr.isEmpty()) {
-                                if (currentIndex < 0 || currentIndex >= avatarsArr.size()) {
-                                    return;
-                                }
-                                TLRPC.Photo photo = avatarsArr.get(currentIndex);
-                                TLRPC.FileLocation currentLocation = imagesArrLocations.get(currentIndex);
-                                if (photo instanceof TLRPC.TL_photoEmpty) {
-                                    photo = null;
-                                }
-                                boolean current = false;
-                                if (currentUserAvatarLocation != null) {
-                                    if (photo != null) {
-                                        for (TLRPC.PhotoSize size : photo.sizes) {
-                                            if (size.location.local_id == currentUserAvatarLocation.local_id && size.location.volume_id == currentUserAvatarLocation.volume_id) {
-                                                current = true;
-                                                break;
-                                            }
-                                        }
-                                    } else if (currentLocation.local_id == currentUserAvatarLocation.local_id && currentLocation.volume_id == currentUserAvatarLocation.volume_id) {
-                                        current = true;
+                        builder.setTitle(LocaleController.getString("AppName", R.string.AppName));
+                        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (!imagesArr.isEmpty()) {
+                                    if (currentIndex < 0 || currentIndex >= imagesArr.size()) {
+                                        return;
                                     }
-                                }
-                                if (current) {
-                                    closePhoto(false, false);
-                                } else if (photo != null) {
-                                    TLRPC.TL_inputPhoto inputPhoto = new TLRPC.TL_inputPhoto();
-                                    inputPhoto.id = photo.id;
-                                    inputPhoto.access_hash = photo.access_hash;
-                                    imagesArrLocations.remove(currentIndex);
-                                    imagesArrLocationsSizes.remove(currentIndex);
-                                    avatarsArr.remove(currentIndex);
-                                    if (imagesArrLocations.isEmpty()) {
-                                        closePhoto(false, false);
-                                    } else {
-                                        int index = currentIndex;
-                                        if (index >= avatarsArr.size()) {
-                                            index = avatarsArr.size() - 1;
+
+                                } else if (!avatarsArr.isEmpty()) {
+                                    if (currentIndex < 0 || currentIndex >= avatarsArr.size()) {
+                                        return;
+                                    }
+                                    TLRPC.Photo photo = avatarsArr.get(currentIndex);
+                                    TLRPC.FileLocation currentLocation = imagesArrLocations.get(currentIndex);
+                                    if (photo instanceof TLRPC.TL_photoEmpty) {
+                                        photo = null;
+                                    }
+                                    boolean current = false;
+                                    if (currentUserAvatarLocation != null) {
+                                        if (photo != null) {
+                                            for (TLRPC.PhotoSize size : photo.sizes) {
+                                                if (size.location.local_id == currentUserAvatarLocation.local_id && size.location.volume_id == currentUserAvatarLocation.volume_id) {
+                                                    current = true;
+                                                    break;
+                                                }
+                                            }
+                                        } else if (currentLocation.local_id == currentUserAvatarLocation.local_id && currentLocation.volume_id == currentUserAvatarLocation.volume_id) {
+                                            current = true;
                                         }
-                                        currentIndex = -1;
-                                        setImageIndex(index, true);
+                                    }
+                                    if (current) {
+                                        closePhoto(false, false);
+                                    } else if (photo != null) {
+                                        TLRPC.TL_inputPhoto inputPhoto = new TLRPC.TL_inputPhoto();
+                                        inputPhoto.id = photo.id;
+                                        inputPhoto.access_hash = photo.access_hash;
+                                        imagesArrLocations.remove(currentIndex);
+                                        imagesArrLocationsSizes.remove(currentIndex);
+                                        avatarsArr.remove(currentIndex);
+                                        if (imagesArrLocations.isEmpty()) {
+                                            closePhoto(false, false);
+                                        } else {
+                                            int index = currentIndex;
+                                            if (index >= avatarsArr.size()) {
+                                                index = avatarsArr.size() - 1;
+                                            }
+                                            currentIndex = -1;
+                                            setImageIndex(index, true);
+                                        }
                                     }
                                 }
                             }
+                        });
+                        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+                        showAlertDialog(builder);
+                        break;
+                    case gallery_menu_caption:
+                        if (imageMoveAnimation != null || changeModeAnimation != null) {
+                            return;
                         }
-                    });
-                    builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
-                    showAlertDialog(builder);
-                } else if (id == gallery_menu_caption) {
-                    if (imageMoveAnimation != null || changeModeAnimation != null) {
-                        return;
-                    }
-                    //.setVisibility(View.GONE);
-                    //tuneItem.setVisibility(View.GONE);
-                    captionItem.setVisibility(View.GONE);
-                    captionDoneItem.setVisibility(View.VISIBLE);
-                    FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) captionEditText.getLayoutParams();
-                    layoutParams.bottomMargin = 0;
-                    captionEditText.setLayoutParams(layoutParams);
-                    layoutParams = (FrameLayout.LayoutParams) mentionListView.getLayoutParams();
-                    layoutParams.bottomMargin = 0;
-                    mentionListView.setLayoutParams(layoutParams);
-                    captionTextView.setVisibility(View.INVISIBLE);
-                    captionEditText.openKeyboard();
-                    lastTitle = actionBar.getTitle();
-                    actionBar.setTitle(LocaleController.getString("PhotoCaption", R.string.PhotoCaption));
-                } else if (id == gallery_menu_caption_done) {
-                    closeCaptionEnter(true);
-                } else if (id == gallery_menu_share) {
-                    onSharePressed();
-                } else if (id == gallery_menu_openin) {
-                    try {
-                        closePhoto(false, false);
-                    } catch (Exception e) {
-                        FileLog.e("picca", e);
-                    }
+                        //.setVisibility(View.GONE);
+                        //tuneItem.setVisibility(View.GONE);
+                        captionItem.setVisibility(View.GONE);
+                        captionDoneItem.setVisibility(View.VISIBLE);
+                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) captionEditText.getLayoutParams();
+                        layoutParams.bottomMargin = 0;
+                        captionEditText.setLayoutParams(layoutParams);
+                        layoutParams = (FrameLayout.LayoutParams) mentionListView.getLayoutParams();
+                        layoutParams.bottomMargin = 0;
+                        mentionListView.setLayoutParams(layoutParams);
+                        captionTextView.setVisibility(View.INVISIBLE);
+                        captionEditText.openKeyboard();
+                        lastTitle = actionBar.getTitle();
+                        actionBar.setTitle(LocaleController.getString("PhotoCaption", R.string.PhotoCaption));
+                        break;
+                    case gallery_menu_caption_done:
+                        closeCaptionEnter(true);
+                        break;
+                    case gallery_menu_share:
+                        onSharePressed();
+                        break;
+                    case gallery_menu_openin:
+                        try {
+                            closePhoto(false, false);
+                        } catch (Exception e) {
+                            FileLog.e("picca", e);
+                        }
+                        break;
+                    case SHOW_DETAILS:
+                        showDetails();
+                        break;
                 }
+
             }
 
             @Override
@@ -1099,9 +1264,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         ActionBarMenu menu = actionBar.createMenu();
 
-        menuItem = menu.addItem(0, R.drawable.ic_ab_other);
+        menu.addItem(SHOW_DETAILS, R.drawable.ic_info_outline_white_24dp);
+        menuItem = menu.addItem(EXTRA_BUTTON, R.drawable.ic_ab_other);
         String str = LocaleController.getString("OpenInBrowser", R.string.OpenInBrowser);
-        if (!TextUtils.isEmpty(str)) { //TODO add new string later
+        if (!TextUtils.isEmpty(str)) {
             str = str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
         }
         menuItem.addSubItem(gallery_menu_openin, str, 0);
@@ -3373,7 +3539,14 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        return false;
+        try {
+            if (visibleDialog != null) {
+                visibleDialog.dismiss();
+            }
+        } catch (Exception exp) {
+            FileLog.e("picca", exp);
+        }
+        return true;
     }
 
     @Override

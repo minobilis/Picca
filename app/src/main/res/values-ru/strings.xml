@@ -173,4 +173,14 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">h:mm a</string>
     <string name="formatDateAtTime">%1$s в %2$s</string>
+    <string name="FileNameCopied">Имя файла скопировано в буфер обмена</string>
+    <string name="FileName">Имя файла</string>
+    <string name="DateTaken">Date taken</string>
+    <string name="DateTakenCopiedToClipboard">Дата создания скопирована в буфер обмена</string>
+    <string name="FilePathCopied">Полный путь к файлу скопирован в буфер обмена</string>
+    <string name="TimeTaken">Время съемки</string>
+    <string name="TimeTakenCopied">Время съемки скопировано в буфер обмена</string>
+    <string name="FileSize">Размер файла</string>
+    <string name="FileSizeCopied">Размер файла скопирован в буфер обмена</string>
+    <string name="Mpixels">Мпикс.</string>
 </resources>
