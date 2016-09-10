@@ -134,7 +134,7 @@
     <string name="Delete">Delete</string>
     <string name="Set">Set</string>
     <string name="OK">OK</string>
-    <string name="Crop">CROP</string>
+    <string name="Crop">Crop</string>
     <!--messages-->
     <!--Alert messages-->
     <string name="Loading">Loading...</string>

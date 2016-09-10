@@ -849,16 +849,19 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             return;
         }
         try {
-            File f = null;
-            boolean isVideo = false;
+
+            String fullPath = "";
+            Object object = imagesArrLocals.get(currentIndex);
+            if (object instanceof MediaController.PhotoEntry) {
+                MediaController.PhotoEntry entry = (MediaController.PhotoEntry) object;
+                fullPath = entry.path;
+            }
+
+            File f = new File(fullPath);
 
             if (f.exists()) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                if (isVideo) {
-                    intent.setType("video/mp4");
-                } else {
-                    intent.setType("image/jpeg");
-                }
+                intent.setType("image/jpeg");
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
 
                 parentActivity.startActivityForResult(Intent.createChooser(intent, LocaleController.getString("ShareFile", R.string.ShareFile)), 500);
@@ -870,7 +873,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 showAlertDialog(builder);
             }
         } catch (Exception e) {
-            FileLog.e("picca", e);
+            FileLog.e("tmessages", e);
         }
     }
 
@@ -1265,6 +1268,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         ActionBarMenu menu = actionBar.createMenu();
 
         menu.addItem(SHOW_DETAILS, R.drawable.ic_info_outline_white_24dp);
+        menu.addItem(gallery_menu_share, R.drawable.share);
         menuItem = menu.addItem(EXTRA_BUTTON, R.drawable.ic_ab_other);
         String str = LocaleController.getString("OpenInBrowser", R.string.OpenInBrowser);
         if (!TextUtils.isEmpty(str)) {
@@ -1695,7 +1699,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 });
             }
 
-            editorDoneLayout.doneButtonTextView.setText(LocaleController.getString("Crop", R.string.Crop));
+            editorDoneLayout.doneButtonTextView.setText(LocaleController.getString("Crop", R.string.Crop).toUpperCase());
             changeModeAnimation = new AnimatorSet();
             ArrayList<Animator> arrayList = new ArrayList<>();
             arrayList.add(ObjectAnimator.ofFloat(actionBar, "translationY", 0, -actionBar.getHeight()));

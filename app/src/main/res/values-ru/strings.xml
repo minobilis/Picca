@@ -134,7 +134,7 @@
     <string name="Delete">Delete</string>
     <string name="Set">Set</string>
     <string name="OK">OK</string>
-    <string name="Crop">КАДРИРОВАТЬ</string>
+    <string name="Crop">Кадрировать</string>
     <!--messages-->
     <!--Alert messages-->
     <string name="Loading">Loading...</string>
