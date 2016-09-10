@@ -36,6 +36,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ActionMode;
@@ -2437,6 +2438,15 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             actionBar.setOccupyStatusBar(true);
             showSystemUI(containerView);
         }
+
+        Handler handlerTimer = new Handler();
+        handlerTimer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideSystemUI(containerView);
+            }
+        }, 2000);
+
 
         if (parentActivity == null || isVisible || provider == null && checkAnimation() || messageObject == null && fileLocation == null && messages == null && photos == null) {
             return;
