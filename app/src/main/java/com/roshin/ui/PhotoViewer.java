@@ -2448,6 +2448,15 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }, 2000);
 
 
+        Handler handlerTimer = new Handler();
+        handlerTimer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideSystemUI(containerView);
+            }
+        }, 2000);
+
+
         if (parentActivity == null || isVisible || provider == null && checkAnimation() || messageObject == null && fileLocation == null && messages == null && photos == null) {
             return;
         }
