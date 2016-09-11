@@ -1220,8 +1220,8 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                         if (imageMoveAnimation != null || changeModeAnimation != null) {
                             return;
                         }
-                        //.setVisibility(View.GONE);
-                        //tuneItem.setVisibility(View.GONE);
+                        cropItem.setVisibility(View.GONE);
+                        tuneItem.setVisibility(View.GONE);
                         captionItem.setVisibility(View.GONE);
                         captionDoneItem.setVisibility(View.VISIBLE);
                         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) captionEditText.getLayoutParams();
@@ -1284,7 +1284,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         captionDoneItem = menu.addItemWithWidth(gallery_menu_caption_done, R.drawable.ic_done, AndroidUtilities.dp(56));
         captionItem = menu.addItemWithWidth(gallery_menu_caption, R.drawable.photo_text, AndroidUtilities.dp(56));
-        //cropItem = menu.addItemWithWidth(gallery_menu_crop, R.drawable.photo_crop, AndroidUtilities.dp(56));
+        cropItem = menu.addItemWithWidth(gallery_menu_crop, R.drawable.photo_crop, AndroidUtilities.dp(56));
         //tuneItem = menu.addItemWithWidth(gallery_menu_tune, R.drawable.photo_tools, AndroidUtilities.dp(56));
 
         bottomLayout = new FrameLayout(actvityContext);
@@ -1356,7 +1356,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         editorDoneLayout.setBackgroundColor(0x7f000000);
         editorDoneLayout.updateSelectedCount(0, false);
         editorDoneLayout.setVisibility(View.GONE);
-        containerView.addView(editorDoneLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.LEFT | Gravity.BOTTOM));
+        containerView.addView(editorDoneLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.LEFT | Gravity.BOTTOM, 0, 0, 0, Build.VERSION.SDK_INT >= 19 ? AndroidUtilities.navigationBarHeight/AndroidUtilities.density : 0));
         editorDoneLayout.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1484,7 +1484,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 placeProvider.setPhotoChecked(currentIndex);
             }
         }
-        //cropItem.setVisibility(View.VISIBLE);
+        cropItem.setVisibility(View.VISIBLE);
         captionItem.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= 16) {
             //tuneItem.setVisibility(View.VISIBLE);
@@ -1591,6 +1591,12 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         if (currentEditMode == mode || centerImage.getBitmap() == null || changeModeAnimation != null || imageMoveAnimation != null || radialProgressViews[0].backgroundState != -1) {
             return;
         }
+
+        if (mode != 0) {
+            mHandler.removeCallbacksAndMessages(null); // FIXME: 11.09.2016 stop runnable hiding system ui in edit mode
+            showSystemUI(containerView);
+        }
+
         if (mode == 0) {
             if (currentEditMode == 2) {
                 if (photoFilterView.getToolsView().getVisibility() != View.VISIBLE) {
@@ -2035,7 +2041,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         menuItem.hideSubItem(gallery_menu_share);
         menuItem.hideSubItem(gallery_menu_openin);
         actionBar.setTranslationY(0);
-        //cropItem.setVisibility(View.GONE);
+        cropItem.setVisibility(View.GONE);
         captionItem.setVisibility(View.GONE);
         captionDoneItem.setVisibility(View.GONE);
         captionEditText.setVisibility(View.GONE);
@@ -2093,7 +2099,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             bottomLayout.setVisibility(View.GONE);
             canShowBottom = false;
             Object obj = imagesArrLocals.get(index);
-            //cropItem.setVisibility(obj instanceof MediaController.PhotoEntry || obj instanceof MediaController.SearchImage && ((MediaController.SearchImage) obj).type == 0 ? View.VISIBLE : View.GONE);
+            cropItem.setVisibility(obj instanceof MediaController.PhotoEntry || obj instanceof MediaController.SearchImage && ((MediaController.SearchImage) obj).type == 0 ? View.VISIBLE : View.GONE);
 
             if (Build.VERSION.SDK_INT >= 16) {
                 //tuneItem.setVisibility(cropItem.getVisibility());

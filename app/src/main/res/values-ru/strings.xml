@@ -128,7 +128,7 @@
     <!--button titles-->
     <string name="Done">Выполнено</string>
     <string name="Save">Save</string>
-    <string name="Cancel">Cancel</string>
+    <string name="Cancel">Отмена</string>
     <string name="Edit">Edit</string>
     <string name="Send">Send</string>
     <string name="Delete">Delete</string>
