@@ -259,7 +259,13 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private static Paint progressPaint = null;
 
     protected Dialog visibleDialog = null;
-    Handler mHandler = new Handler();
+
+    private Runnable hideSystemUIRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hideSystemUI(containerView);
+        }
+    };
 
     private class BackgroundDrawable extends ColorDrawable {
 
@@ -1593,8 +1599,9 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
 
         if (mode != 0) {
-            mHandler.removeCallbacksAndMessages(null); // FIXME: 11.09.2016 stop runnable hiding system ui in edit mode
-            showSystemUI(containerView);
+            if (hideSystemUIRunnable != null) {
+                AndroidUtilities.cancelRunOnUIThread(hideSystemUIRunnable);
+            }
         }
 
         if (mode == 0) {
@@ -2446,21 +2453,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             showSystemUI(containerView);
         }
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideSystemUI(containerView);
-            }
-        }, 2000);
-
-
-        Handler handlerTimer = new Handler();
-        handlerTimer.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideSystemUI(containerView);
-            }
-        }, 2000);
+        AndroidUtilities.runOnUIThread(hideSystemUIRunnable, 2000);
 
 
         if (parentActivity == null || isVisible || provider == null && checkAnimation() || messageObject == null && fileLocation == null && messages == null && photos == null) {
