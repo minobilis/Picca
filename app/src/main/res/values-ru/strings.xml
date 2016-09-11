@@ -20,7 +20,7 @@
     <!--documents view-->
     <!--chat view-->
     <string name="Invisible">invisible</string>
-    <string name="ShareFile">Share</string>
+    <string name="ShareFile">Поделиться</string>
     <string name="OpenInBrowser">OPEN IN...</string>
     <!--notification-->
     <!--contacts view-->
@@ -183,4 +183,5 @@
     <string name="FileSize">Размер файла</string>
     <string name="FileSizeCopied">Размер файла скопирован в буфер обмена</string>
     <string name="Mpixels">Мпикс.</string>
+    <string name="ImageSavedTo">Результат сохранен в </string>
 </resources>
