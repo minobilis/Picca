@@ -183,4 +183,5 @@
     <string name="FileSize">File size</string>
     <string name="FileSizeCopied">File size is copied to clipboard</string>
     <string name="Mpixels">Mpix</string>
+    <string name="ImageSavedTo">Result image is saved to</string>
 </resources>

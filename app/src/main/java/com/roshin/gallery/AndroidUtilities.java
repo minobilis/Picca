@@ -1050,21 +1050,29 @@ public class AndroidUtilities {
         }
     }
 
+    public static String getAlbumDirPath(){
+        File albumDir = getAlbumDir();
+        if (albumDir != null) {
+            return albumDir.toString();
+        }
+        return "";
+    }
+
     private static File getAlbumDir() {
         if (Build.VERSION.SDK_INT >= 23 && ApplicationLoader.applicationContext.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             return FileLoader.getInstance().getDirectory(FileLoader.MEDIA_DIR_CACHE);
         }
         File storageDir = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Telegram");
+            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Picca");
             if (!storageDir.mkdirs()) {
                 if (!storageDir.exists()){
-                    FileLog.d("tmessages", "failed to create directory");
+                    FileLog.d("picca", "failed to create directory");
                     return null;
                 }
             }
         } else {
-            FileLog.d("tmessages", "External storage is not mounted READ/WRITE.");
+            FileLog.d("picca", "External storage is not mounted READ/WRITE.");
         }
 
         return storageDir;

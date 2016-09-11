@@ -93,9 +93,12 @@ import com.roshin.ui.Components.RecyclerListView;
 import com.roshin.ui.Components.SizeNotifierFrameLayoutPhoto;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -881,7 +884,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 showAlertDialog(builder);
             }
         } catch (Exception e) {
-            FileLog.e("tmessages", e);
+            FileLog.e("picca", e);
         }
     }
 
@@ -937,7 +940,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             fileCell.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    copyToClipboard(LocaleController.getString("FileName", R.string.FileName), filename);
+                    copyToClipboard(LocaleController.getString("FileName", R.string.FileName), fullPath);
                     Toast.makeText(parentActivity, LocaleController.getString("FilePathCopied", R.string.FilePathCopied), Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -1110,6 +1113,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
+                AndroidUtilities.cancelRunOnUIThread(hideSystemUIRunnable);
                 switch (id){
                     case -1:
                         if (needCaptionLayout && (captionEditText.isPopupShowing() || captionEditText.isKeyboardVisible())) {
@@ -1227,7 +1231,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                             return;
                         }
                         cropItem.setVisibility(View.GONE);
-                        tuneItem.setVisibility(View.GONE);
+                        //tuneItem.setVisibility(View.GONE);
                         captionItem.setVisibility(View.GONE);
                         captionDoneItem.setVisibility(View.VISIBLE);
                         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) captionEditText.getLayoutParams();
@@ -1545,6 +1549,14 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         }
     }
 
+    private void addPicToGallery(String pathToImage){
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(pathToImage);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        parentActivity.sendBroadcast(mediaScanIntent);
+    }
+
     private void applyCurrentEditMode() {
         Bitmap bitmap = null;
         if (currentEditMode == 1) {
@@ -1552,8 +1564,11 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         } else if (currentEditMode == 2) {
             bitmap = photoFilterView.getBitmap();
         }
+
         if (bitmap != null) {
-            TLRPC.PhotoSize size = ImageLoader.scaleAndSaveImage(bitmap, AndroidUtilities.getPhotoSize(), AndroidUtilities.getPhotoSize(), 80, false, 101, 101);
+            saveBitmapToFile(bitmap);
+
+            /*TLRPC.PhotoSize size = ImageLoader.scaleAndSaveImage(bitmap, AndroidUtilities.getPhotoSize(), AndroidUtilities.getPhotoSize(), 80, false, 101, 101);
             if (size != null) {
                 Object object = imagesArrLocals.get(currentIndex);
                 if (object instanceof MediaController.PhotoEntry) {
@@ -1589,6 +1604,55 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 centerImage.setOrientation(0, true);
                 centerImage.setImageBitmap(bitmap);
                 centerImage.setParentView(containerView);
+            }*/
+        }
+    }
+
+    private void saveBitmapToFile(Bitmap bitmap) {
+        String filename;
+        String imageType = null;
+        Object object = imagesArrLocals.get(currentIndex);
+        if (object instanceof MediaController.PhotoEntry) {
+            MediaController.PhotoEntry entry = (MediaController.PhotoEntry) object;
+            String fullPath = entry.path;
+            filename = fullPath.substring(fullPath.lastIndexOf("/") + 1);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(fullPath, options);
+            imageType = options.outMimeType;
+        } else {
+            Calendar c = Calendar.getInstance();
+            int seconds = c.get(Calendar.SECOND);
+            filename = String.valueOf(seconds) + "." + "png";
+        }
+
+        FileOutputStream out = null;
+        try {
+            String dirPath = AndroidUtilities.getAlbumDirPath();
+            String fullPath = dirPath + "/edited_" + filename;
+            out = new FileOutputStream(fullPath);
+
+            if (imageType != null) {
+                switch (imageType){
+                    case "image/jpeg": bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
+                        break;
+                    case "image/png": bitmap.compress(Bitmap.CompressFormat.PNG, 85, out);
+                        break;
+                    default: bitmap.compress(Bitmap.CompressFormat.PNG, 85, out);
+                }
+            }
+            addPicToGallery(fullPath);
+            Toast.makeText(parentActivity, LocaleController.getString("ImageSavedTo", R.string.ImageSavedTo) + fullPath, Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
