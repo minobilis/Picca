@@ -1642,7 +1642,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
             }
             addPicToGallery(fullPath);
-            Toast.makeText(parentActivity, LocaleController.getString("ImageSavedTo", R.string.ImageSavedTo) + fullPath, Toast.LENGTH_LONG).show();
+            Toast.makeText(parentActivity, LocaleController.getString("ImageSavedTo", R.string.ImageSavedTo) + dirPath, Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             e.printStackTrace();
