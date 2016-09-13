@@ -61,8 +61,6 @@ import java.util.Timer;
 
 public class MediaController implements NotificationCenter.NotificationCenterDelegate{
 
-    public static int[] readArgs = new int[3];
-
     public interface FileDownloadProgressListener {
         void onFailedDownload(String fileName);
         void onSuccessDownload(String fileName);
@@ -146,60 +144,12 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         public TLRPC.Document document;
     }
 
-    public final static String MIME_TYPE = "video/avc";
-    private final static int PROCESSOR_TYPE_OTHER = 0;
-    private final static int PROCESSOR_TYPE_QCOM = 1;
-    private final static int PROCESSOR_TYPE_INTEL = 2;
-    private final static int PROCESSOR_TYPE_MTK = 3;
-    private final static int PROCESSOR_TYPE_SEC = 4;
-    private final static int PROCESSOR_TYPE_TI = 5;
-    private final Object videoConvertSync = new Object();
-
-    private HashMap<Long, Long> typingTimes = new HashMap<>();
-
     private SensorManager sensorManager;
-    private boolean ignoreProximity;
     private PowerManager.WakeLock proximityWakeLock;
     private Sensor proximitySensor;
     private Sensor accelerometerSensor;
     private Sensor linearSensor;
     private Sensor gravitySensor;
-    private boolean raiseToEarRecord;
-    private boolean accelerometerVertical;
-    private int raisedToTop;
-    private int raisedToBack;
-    private int countLess;
-    private long timeSinceRaise;
-    private long lastTimestamp = 0;
-    private boolean proximityTouched;
-    private boolean proximityHasDifferentValues;
-    private float lastProximityValue = -100;
-    private boolean useFrontSpeaker;
-    private boolean inputFieldHasText;
-    private boolean allowStartRecord;
-    private boolean ignoreOnPause;
-    private boolean sensorsStarted;
-    private float previousAccValue;
-    private float[] gravity = new float[3];
-    private float[] gravityFast = new float[3];
-    private float[] linearAcceleration = new float[3];
-
-    private int hasAudioFocus;
-    private boolean callInProgress;
-    private int audioFocus = AUDIO_NO_FOCUS_NO_DUCK;
-    private boolean resumeAudioOnFocusGain;
-
-    private static final float VOLUME_DUCK = 0.2f;
-    private static final float VOLUME_NORMAL = 1.0f;
-    private static final int AUDIO_NO_FOCUS_NO_DUCK = 0;
-    private static final int AUDIO_NO_FOCUS_CAN_DUCK = 1;
-    private static final int AUDIO_FOCUSED  = 2;
-
-    private final Object videoQueueSync = new Object();
-    private boolean cancelCurrentVideoConversion = false;
-    private boolean videoConvertFirstWrite = true;
-
-    private boolean voiceMessagesPlaylistUnread;
 
     public static final int AUTODOWNLOAD_MASK_PHOTO = 1;
     public static final int AUTODOWNLOAD_MASK_AUDIO = 2;
@@ -210,14 +160,6 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
     public int mobileDataDownloadMask = 0;
     public int wifiDownloadMask = 0;
     public int roamingDownloadMask = 0;
-    private int lastCheckMask = 0;
-    private ArrayList<DownloadObject> photoDownloadQueue = new ArrayList<>();
-    private ArrayList<DownloadObject> audioDownloadQueue = new ArrayList<>();
-    private ArrayList<DownloadObject> documentDownloadQueue = new ArrayList<>();
-    private ArrayList<DownloadObject> musicDownloadQueue = new ArrayList<>();
-    private ArrayList<DownloadObject> gifDownloadQueue = new ArrayList<>();
-    private ArrayList<DownloadObject> videoDownloadQueue = new ArrayList<>();
-    private HashMap<String, DownloadObject> downloadQueueKeys = new HashMap<>();
 
     private boolean saveToGallery = true;
     private boolean autoplayGifs = true;
@@ -235,72 +177,20 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
     private boolean listenerInProgress = false;
     private HashMap<String, FileDownloadProgressListener> addLaterArray = new HashMap<>();
     private ArrayList<FileDownloadProgressListener> deleteLaterArray = new ArrayList<>();
-    private int lastTag = 0;
 
-    private boolean isPaused = false;
-    private MediaPlayer audioPlayer = null;
-    private AudioTrack audioTrackPlayer = null;
-    private int lastProgress = 0;
     private int playerBufferSize = 0;
-    private boolean decodingFinished = false;
-    private long currentTotalPcmDuration;
-    private long lastPlayPcm;
-    private int ignoreFirstProgress = 0;
-    private Timer progressTimer = null;
-    private final Object progressTimerSync = new Object();
-    private int buffersWrited;
-    private int currentPlaylistNum;
-    private boolean forceLoopCurrentPlaylist;
-    private boolean downloadingCurrentMessage;
-    private boolean playMusicAgain;
 
-    private AudioRecord audioRecorder = null;
-    private TLRPC.TL_document recordingAudio = null;
-    private File recordingAudioFile = null;
-    private long recordStartTime;
-    private long recordTimeCount;
-    private long recordDialogId;
     private DispatchQueue fileDecodingQueue;
     private DispatchQueue playerQueue;
-    private final Object playerSync = new Object();
-    private final Object playerObjectSync = new Object();
-    private short[] recordSamples = new short[1024];
-    private long samplesCount;
 
-    private final Object sync = new Object();
 
     private ArrayList<ByteBuffer> recordBuffers = new ArrayList<>();
     private ByteBuffer fileBuffer;
     private int recordBufferSize;
-    private int sendAfterDone;
 
-    private Runnable recordStartRunnable;
     private DispatchQueue recordQueue;
     private DispatchQueue fileEncodingQueue;
 
-    private class InternalObserver extends ContentObserver {
-        public InternalObserver() {
-            super(null);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            processMediaObserver(MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        }
-    }
-
-    private class ExternalObserver extends ContentObserver {
-        public ExternalObserver() {
-            super(null);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            processMediaObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }
-    }
 
     private class GalleryObserverInternal extends ContentObserver {
         public GalleryObserverInternal() {
@@ -344,41 +234,10 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         }
     }
 
-    private ExternalObserver externalObserver = null;
-    private InternalObserver internalObserver = null;
     private long lastSecretChatEnterTime = 0;
     private long lastSecretChatLeaveTime = 0;
     private long lastMediaCheckTime = 0;
     private TLRPC.EncryptedChat lastSecretChat = null;
-    private ArrayList<Long> lastSecretChatVisibleMessages = null;
-    private int startObserverToken = 0;
-    private StopMediaObserverRunnable stopMediaObserverRunnable = null;
-
-    private final class StopMediaObserverRunnable implements Runnable {
-        public int currentObserverToken = 0;
-
-        @Override
-        public void run() {
-            if (currentObserverToken == startObserverToken) {
-                try {
-                    if (internalObserver != null) {
-                        ApplicationLoader.applicationContext.getContentResolver().unregisterContentObserver(internalObserver);
-                        internalObserver = null;
-                    }
-                } catch (Exception e) {
-                    FileLog.e("picca", e);
-                }
-                try {
-                    if (externalObserver != null) {
-                        ApplicationLoader.applicationContext.getContentResolver().unregisterContentObserver(externalObserver);
-                        externalObserver = null;
-                    }
-                } catch (Exception e) {
-                    FileLog.e("picca", e);
-                }
-            }
-        }
-    }
 
     private String[] mediaProjections = null;
 
@@ -465,15 +324,6 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
             }
         });
 
-        BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //checkAutodownloadSettings();
-            }
-        };
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        ApplicationLoader.applicationContext.registerReceiver(networkStateReceiver, filter);
-
         if (Build.VERSION.SDK_INT >= 16) {
             mediaProjections = new String[]{
                     MediaStore.Images.ImageColumns.DATA,
@@ -504,182 +354,6 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         } catch (Exception e) {
             FileLog.e("picca", e);
         }
-    }
-
-    public void cleanup() {
-        playMusicAgain = false;
-        photoDownloadQueue.clear();
-        audioDownloadQueue.clear();
-        documentDownloadQueue.clear();
-        videoDownloadQueue.clear();
-        musicDownloadQueue.clear();
-        gifDownloadQueue.clear();
-        downloadQueueKeys.clear();
-        typingTimes.clear();
-    }
-
-    protected int getAutodownloadMask() {
-        int mask = 0;
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_PHOTO) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_PHOTO) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_PHOTO) != 0) {
-            mask |= AUTODOWNLOAD_MASK_PHOTO;
-        }
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_AUDIO) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_AUDIO) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_AUDIO) != 0) {
-            mask |= AUTODOWNLOAD_MASK_AUDIO;
-        }
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_VIDEO) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_VIDEO) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_VIDEO) != 0) {
-            mask |= AUTODOWNLOAD_MASK_VIDEO;
-        }
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_DOCUMENT) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_DOCUMENT) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_DOCUMENT) != 0) {
-            mask |= AUTODOWNLOAD_MASK_DOCUMENT;
-        }
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_MUSIC) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_MUSIC) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_MUSIC) != 0) {
-            mask |= AUTODOWNLOAD_MASK_MUSIC;
-        }
-        if ((mobileDataDownloadMask & AUTODOWNLOAD_MASK_GIF) != 0 || (wifiDownloadMask & AUTODOWNLOAD_MASK_GIF) != 0 || (roamingDownloadMask & AUTODOWNLOAD_MASK_GIF) != 0) {
-            mask |= AUTODOWNLOAD_MASK_GIF;
-        }
-        return mask;
-    }
-
-    public boolean canDownloadMedia(int type) {
-        return (getCurrentDownloadMask() & type) != 0;
-    }
-
-    private int getCurrentDownloadMask() {
-        if (ConnectionsManager.isConnectedToWiFi()) {
-            return wifiDownloadMask;
-        } else if (ConnectionsManager.isRoaming()) {
-            return roamingDownloadMask;
-        } else {
-            return mobileDataDownloadMask;
-        }
-    }
-
-    protected void processDownloadObjects(int type, ArrayList<DownloadObject> objects) {
-        if (objects.isEmpty()) {
-            return;
-        }
-        ArrayList<DownloadObject> queue = null;
-        if (type == AUTODOWNLOAD_MASK_PHOTO) {
-            queue = photoDownloadQueue;
-        } else if (type == AUTODOWNLOAD_MASK_AUDIO) {
-            queue = audioDownloadQueue;
-        } else if (type == AUTODOWNLOAD_MASK_VIDEO) {
-            queue = videoDownloadQueue;
-        } else if (type == AUTODOWNLOAD_MASK_DOCUMENT) {
-            queue = documentDownloadQueue;
-        } else if (type == AUTODOWNLOAD_MASK_MUSIC) {
-            queue = musicDownloadQueue;
-        } else if (type == AUTODOWNLOAD_MASK_GIF) {
-            queue = gifDownloadQueue;
-        }
-        for (int a = 0; a < objects.size(); a++) {
-            DownloadObject downloadObject = objects.get(a);
-            String path;
-            if (downloadObject.object instanceof TLRPC.Document) {
-                TLRPC.Document document = (TLRPC.Document) downloadObject.object;
-                path = FileLoader.getAttachFileName(document);
-            } else {
-                path = FileLoader.getAttachFileName(downloadObject.object);
-            }
-            if (downloadQueueKeys.containsKey(path)) {
-                continue;
-            }
-
-            boolean added = true;
-            if (downloadObject.object instanceof TLRPC.PhotoSize) {
-                FileLoader.getInstance().loadFile((TLRPC.PhotoSize) downloadObject.object, null, false);
-            } else if (downloadObject.object instanceof TLRPC.Document) {
-                TLRPC.Document document = (TLRPC.Document) downloadObject.object;
-                FileLoader.getInstance().loadFile(document, false, false);
-            } else {
-                added = false;
-            }
-            if (added) {
-                queue.add(downloadObject);
-                downloadQueueKeys.put(path, downloadObject);
-            }
-        }
-    }
-
-    public void processMediaObserver(Uri uri) {
-        try {
-            Point size = AndroidUtilities.getRealScreenSize();
-
-            Cursor cursor = ApplicationLoader.applicationContext.getContentResolver().query(uri, mediaProjections, null, null, "date_added DESC LIMIT 1");
-            final ArrayList<Long> screenshotDates = new ArrayList<>();
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String val = "";
-                    String data = cursor.getString(0);
-                    String display_name = cursor.getString(1);
-                    String album_name = cursor.getString(2);
-                    long date = cursor.getLong(3);
-                    String title = cursor.getString(4);
-                    int photoW = 0;
-                    int photoH = 0;
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        photoW = cursor.getInt(5);
-                        photoH = cursor.getInt(6);
-                    }
-                    if (data != null && data.toLowerCase().contains("screenshot") ||
-                            display_name != null && display_name.toLowerCase().contains("screenshot") ||
-                            album_name != null && album_name.toLowerCase().contains("screenshot") ||
-                            title != null && title.toLowerCase().contains("screenshot")) {
-                        try {
-                            if (photoW == 0 || photoH == 0) {
-                                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                                bmOptions.inJustDecodeBounds = true;
-                                BitmapFactory.decodeFile(data, bmOptions);
-                                photoW = bmOptions.outWidth;
-                                photoH = bmOptions.outHeight;
-                            }
-                            if (photoW <= 0 || photoH <= 0 || (photoW == size.x && photoH == size.y || photoH == size.x && photoW == size.y)) {
-                                screenshotDates.add(date);
-                            }
-                        } catch (Exception e) {
-                            screenshotDates.add(date);
-                        }
-                    }
-                }
-                cursor.close();
-            }
-            if (!screenshotDates.isEmpty()) {
-                AndroidUtilities.runOnUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        NotificationCenter.getInstance().postNotificationName(NotificationCenter.screenshotTook);
-                        checkScreenshots(screenshotDates);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            FileLog.e("picca", e);
-        }
-    }
-
-    private void checkScreenshots(ArrayList<Long> dates) {
-        if (dates == null || dates.isEmpty() || lastSecretChatEnterTime == 0 || lastSecretChat == null || !(lastSecretChat instanceof TLRPC.TL_encryptedChat)) {
-            return;
-        }
-        long dt = 2000;
-        boolean send = false;
-        for (Long date : dates) {
-            if (lastMediaCheckTime != 0 && date <= lastMediaCheckTime) {
-                continue;
-            }
-
-            if (date >= lastSecretChatEnterTime) {
-                if (lastSecretChatLeaveTime == 0 || date <= lastSecretChatLeaveTime + dt) {
-                    lastMediaCheckTime = Math.max(lastMediaCheckTime, date);
-                    send = true;
-                }
-            }
-        }
-    }
-
-    public int generateObserverTag() {
-        return lastTag++;
     }
 
     public void addLoadingFileObserver(String fileName, FileDownloadProgressListener observer) {
@@ -914,74 +588,6 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
                 }
             }).start();
         }
-    }
-
-    public static String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = null;
-            try {
-                cursor = ApplicationLoader.applicationContext.getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null);
-                if (cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } catch (Exception e) {
-                FileLog.e("picca", e);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-
-    public static String copyFileToCache(Uri uri, String ext) {
-        InputStream inputStream = null;
-        FileOutputStream output = null;
-        try {
-            String name = getFileName(uri);
-            if (name == null) {
-                int id = UserConfig.lastLocalId;
-                UserConfig.lastLocalId--;
-                UserConfig.saveConfig(false);
-                name = String.format(Locale.US, "%d.%s", id, ext);
-            }
-            inputStream = ApplicationLoader.applicationContext.getContentResolver().openInputStream(uri);
-            File f = new File(FileLoader.getInstance().getDirectory(FileLoader.MEDIA_DIR_CACHE), name);
-            output = new FileOutputStream(f);
-            byte[] buffer = new byte[1024 * 20];
-            int len;
-            while ((len = inputStream.read(buffer)) != -1) {
-                output.write(buffer, 0, len);
-            }
-            return f.getAbsolutePath();
-        } catch (Exception e) {
-            FileLog.e("picca", e);
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (Exception e2) {
-                FileLog.e("tmessages", e2);
-            }
-            try {
-                if (output != null) {
-                    output.close();
-                }
-            } catch (Exception e2) {
-                FileLog.e("tmessages", e2);
-            }
-        }
-        return null;
     }
 
     public void toggleSaveToGallery() {
@@ -1223,112 +829,5 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         });
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
-    }
-
-    @SuppressLint("NewApi")
-    public static MediaCodecInfo selectCodec(String mimeType) {
-        int numCodecs = MediaCodecList.getCodecCount();
-        MediaCodecInfo lastCodecInfo = null;
-        for (int i = 0; i < numCodecs; i++) {
-            MediaCodecInfo codecInfo = MediaCodecList.getCodecInfoAt(i);
-            if (!codecInfo.isEncoder()) {
-                continue;
-            }
-            String[] types = codecInfo.getSupportedTypes();
-            for (String type : types) {
-                if (type.equalsIgnoreCase(mimeType)) {
-                    lastCodecInfo = codecInfo;
-                    if (!lastCodecInfo.getName().equals("OMX.SEC.avc.enc")) {
-                        return lastCodecInfo;
-                    } else if (lastCodecInfo.getName().equals("OMX.SEC.AVC.Encoder")) {
-                        return lastCodecInfo;
-                    }
-                }
-            }
-        }
-        return lastCodecInfo;
-    }
-
-    private static boolean isRecognizedFormat(int colorFormat) {
-        switch (colorFormat) {
-            case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar:
-            case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420PackedPlanar:
-            case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar:
-            case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420PackedSemiPlanar:
-            case MediaCodecInfo.CodecCapabilities.COLOR_TI_FormatYUV420PackedSemiPlanar:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public static int selectColorFormat(MediaCodecInfo codecInfo, String mimeType) {
-        MediaCodecInfo.CodecCapabilities capabilities = codecInfo.getCapabilitiesForType(mimeType);
-        int lastColorFormat = 0;
-        for (int i = 0; i < capabilities.colorFormats.length; i++) {
-            int colorFormat = capabilities.colorFormats[i];
-            if (isRecognizedFormat(colorFormat)) {
-                lastColorFormat = colorFormat;
-                if (!(codecInfo.getName().equals("OMX.SEC.AVC.Encoder") && colorFormat == 19)) {
-                    return colorFormat;
-                }
-            }
-        }
-        return lastColorFormat;
-    }
-
-    @TargetApi(16)
-    private int selectTrack(MediaExtractor extractor, boolean audio) {
-        int numTracks = extractor.getTrackCount();
-        for (int i = 0; i < numTracks; i++) {
-            MediaFormat format = extractor.getTrackFormat(i);
-            String mime = format.getString(MediaFormat.KEY_MIME);
-            if (audio) {
-                if (mime.startsWith("audio/")) {
-                    return i;
-                }
-            } else {
-                if (mime.startsWith("video/")) {
-                    return i;
-                }
-            }
-        }
-        return -5;
-    }
-
-    private void didWriteData(final Object messageObject, final File file, final boolean last, final boolean error) {
-        final boolean firstWrite = videoConvertFirstWrite;
-        if (firstWrite) {
-            videoConvertFirstWrite = false;
-        }
-        AndroidUtilities.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                if (error) {
-                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.FilePreparingFailed, messageObject, file.toString());
-                } else {
-                    if (firstWrite) {
-                        NotificationCenter.getInstance().postNotificationName(NotificationCenter.FilePreparingStarted, messageObject, file.toString());
-                    }
-                    NotificationCenter.getInstance().postNotificationName(NotificationCenter.FileNewChunkAvailable, messageObject, file.toString(), last ? file.length() : 0);
-                }
-                if (error || last) {
-                    synchronized (videoConvertSync) {
-                        cancelCurrentVideoConversion = false;
-                    }
-                }
-            }
-        });
-    }
-
-    private void checkConversionCanceled() throws Exception {
-        boolean cancelConversion;
-        synchronized (videoConvertSync) {
-            cancelConversion = cancelCurrentVideoConversion;
-        }
-        if (cancelConversion) {
-            throw new RuntimeException("canceled conversion");
-        }
     }
 }
