@@ -1611,7 +1611,6 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
     private void saveBitmapToFile(Bitmap bitmap) {
         String filename;
         String imageType = null;
-        String dirPath;
         Object object = imagesArrLocals.get(currentIndex);
         if (object instanceof MediaController.PhotoEntry) {
             MediaController.PhotoEntry entry = (MediaController.PhotoEntry) object;
@@ -1629,7 +1628,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         FileOutputStream out = null;
         try {
-            dirPath = AndroidUtilities.getAlbumDirPath();
+            String dirPath = AndroidUtilities.getAlbumDirPath();
             String fullPath = dirPath + "/edited_" + filename;
             out = new FileOutputStream(fullPath);
 
@@ -1643,7 +1642,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
             }
             addPicToGallery(fullPath);
-            Toast.makeText(parentActivity, LocaleController.getString("ImageSavedTo", R.string.ImageSavedTo) + dirPath, Toast.LENGTH_LONG).show();
+            Toast.makeText(parentActivity, LocaleController.getString("ImageSavedTo", R.string.ImageSavedTo) + fullPath, Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             e.printStackTrace();
