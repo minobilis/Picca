@@ -23,7 +23,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/AppName"
         android:supportsRtl="true">
-        <activity android:name="com.roshin.ui.LaunchActivity">
+        <activity
+            android:name="com.roshin.ui.LaunchActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
