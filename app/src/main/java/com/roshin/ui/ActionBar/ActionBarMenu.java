@@ -9,11 +9,15 @@
 package com.roshin.ui.ActionBar;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.roshin.Picca.R;
 import com.roshin.gallery.AndroidUtilities;
 import com.roshin.ui.Components.LayoutHelper;
 
@@ -71,7 +75,12 @@ public class ActionBarMenu extends LinearLayout {
         if (drawable != null) {
             menuItem.iconView.setImageDrawable(drawable);
         } else {
-            menuItem.iconView.setImageResource(icon);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                menuItem.iconView.setImageResource(icon);
+            } else {
+                Drawable drawableIcon = AppCompatDrawableManager.get().getDrawable(getContext(), icon);
+                menuItem.iconView.setImageDrawable(drawableIcon);
+            }
         }
         addView(menuItem);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) menuItem.getLayoutParams();
