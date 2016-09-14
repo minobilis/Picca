@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -45,16 +46,21 @@ import com.roshin.ui.Cells.PhotoPickerAlbumsCell;
 import com.roshin.ui.Cells.PhotoPickerSearchCell;
 import com.roshin.ui.Components.LayoutHelper;
 import com.roshin.ui.Components.NumberTextView;
-import com.roshin.ui.Components.PickerBottomLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PhotoAlbumPickerActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
-    private static final int DELETE_ALBUMS_COMMAND = 4;
+    private static final int DELETE_ALBUMS_COMMAND = 2;
+    private static final int SORTING_DROPDOWN_MENU = 4;
     private static final int EXTRA_MENU = 5;
-    private static final int OPEN_SETTINGS_COMMAND = 6;
+    private static final int SORT_BY_NAME_ASC = 6;
+    private static final int SORT_BY_NAME_DESC = 7;
+    private static final int SORT_BY_DATE_ASC = 8;
+    private static final int SORT_BY_DATE_DESC = 9;
+    private static final int OPEN_SETTINGS_COMMAND = 10;
+
     private final BaseFragment chatActivity;
 
     private SimpleTextView actionModeTextView;
@@ -92,9 +98,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
 
     private PhotoAlbumPickerActivityDelegate delegate;
 
-    private final static int item_photos = 2;
-    private final static int item_video = 3;
-
     public PhotoAlbumPickerActivity(boolean singlePhoto, boolean allowGifs, BaseFragment chatActivity) {
         super();
         classGuid = 0;
@@ -108,8 +111,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
         loading = true;
         MediaController.loadGalleryPhotosAlbums(classGuid);
         NotificationCenter.getInstance().addObserver(this, NotificationCenter.albumsDidLoaded);
-        //NotificationCenter.getInstance().addObserver(this, NotificationCenter.recentImagesDidLoaded);
-        //NotificationCenter.getInstance().addObserver(this, NotificationCenter.closeChats);
         NotificationCenter.getInstance().addObserver(this, NotificationCenter.fileDeleted);
         NotificationCenter.getInstance().addObserver(this, NotificationCenter.albumSelectedStateChange);
         return super.onFragmentCreate();
@@ -118,8 +119,6 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     @Override
     public void onFragmentDestroy() {
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.albumsDidLoaded);
-        //NotificationCenter.getInstance().removeObserver(this, NotificationCenter.recentImagesDidLoaded);
-        //NotificationCenter.getInstance().removeObserver(this, NotificationCenter.closeChats);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.fileDeleted);
         NotificationCenter.getInstance().removeObserver(this, NotificationCenter.albumSelectedStateChange);
         super.onFragmentDestroy();
@@ -128,11 +127,13 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     @SuppressWarnings("unchecked")
     @Override
     public View createView(final Context context) {
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+
         actionBar.setBackgroundColor(Theme.ACTION_BAR_MEDIA_PICKER_COLOR);
         actionBar.setItemsBackgroundColor(Theme.ACTION_BAR_PICKER_SELECTOR_COLOR);
         final MenuDrawable menuDrawable = new MenuDrawable();
         actionBar.setBackButtonDrawable(menuDrawable);
-
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
@@ -150,39 +151,48 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
                             parentLayout.getDrawerLayoutContainer().closeDrawer(false);
                         }
                         break;
-                    case EXTRA_MENU:
-                        if (delegate != null) {
-                            //finishFragment(false);
-                            //delegate.startPhotoSelectActivity();
-                        }
-                        break;
-                    case item_photos:
-                        if (selectedMode == 0) {
-                            return;
-                        }
-                        selectedMode = 0;
-                        emptyView.setText(LocaleController.getString("NoPhotos", R.string.NoPhotos));
-                        listAdapter.notifyDataSetChanged();
-                        break;
-                    case item_video:
-                        if (selectedMode == 1) {
-                            return;
-                        }
-                        selectedMode = 1;
-                        emptyView.setText(LocaleController.getString("NoVideo", R.string.NoVideo));
-                        listAdapter.notifyDataSetChanged();
-                        break;
                     case DELETE_ALBUMS_COMMAND:
                         deleteSelectedAlbumsWithContent();
                         break;
                     case OPEN_SETTINGS_COMMAND:
                         presentFragment(new SettingsActivity());
                         break;
+                    case SORT_BY_NAME_ASC:
+                        editor.putInt("sortAlbumsBy", MediaController.SORT_BY_NAME_ASC);
+                        editor.apply();
+                        MediaController.sortAlbumsBy(albumsSorted, MediaController.SORT_BY_NAME_ASC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_NAME_DESC:
+                        editor.putInt("sortAlbumsBy", MediaController.SORT_BY_NAME_DESC);
+                        editor.apply();
+                        MediaController.sortAlbumsBy(albumsSorted, MediaController.SORT_BY_NAME_DESC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_DATE_ASC:
+                        editor.putInt("sortAlbumsBy", MediaController.SORT_BY_DATE_ASC);
+                        editor.apply();
+                        MediaController.sortAlbumsBy(albumsSorted, MediaController.SORT_BY_DATE_ASC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_DATE_DESC:
+                        editor.putInt("sortAlbumsBy", MediaController.SORT_BY_DATE_DESC);
+                        editor.apply();
+                        MediaController.sortAlbumsBy(albumsSorted, MediaController.SORT_BY_DATE_DESC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
                 }
             }
         });
 
         ActionBarMenu menu = actionBar.createMenu();
+
+        ActionBarMenuItem sortMenu = menu.addItem(SORTING_DROPDOWN_MENU, R.drawable.ic_sort_white_24dp);
+        sortMenu.addSubItem(SORT_BY_NAME_ASC, LocaleController.getString("SortByNameAsc", R.string.SortByNameAsc), 0);
+        sortMenu.addSubItem(SORT_BY_NAME_DESC, LocaleController.getString("SortByNameDesc", R.string.SortByNameDesc), 0);
+        sortMenu.addSubItem(SORT_BY_DATE_ASC, LocaleController.getString("SortByDateAsc", R.string.SortByDateAsc), 0);
+        sortMenu.addSubItem(SORT_BY_DATE_DESC, LocaleController.getString("SortByDateDesc", R.string.SortByDateDesc), 0);
+
         ActionBarMenuItem extendedMenu = menu.addItem(EXTRA_MENU, R.drawable.ic_ab_other);
         extendedMenu.addSubItem(OPEN_SETTINGS_COMMAND, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings);
 

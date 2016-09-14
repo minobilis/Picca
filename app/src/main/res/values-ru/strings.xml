@@ -184,4 +184,8 @@
     <string name="FileSizeCopied">Размер файла скопирован в буфер обмена</string>
     <string name="Mpixels">Мпикс.</string>
     <string name="ImageSavedTo">Результат обработки изображения сохранен в </string>
+    <string name="SortByNameAsc">По имени (А → Я)</string>
+    <string name="SortByNameDesc">По имени (Я → А)</string>
+    <string name="SortByDateAsc">По дате (0 → 9)</string>
+    <string name="SortByDateDesc">По дате (9 → 0)</string>
 </resources>

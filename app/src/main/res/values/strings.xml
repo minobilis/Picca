@@ -184,4 +184,8 @@
     <string name="FileSizeCopied">File size is copied to clipboard</string>
     <string name="Mpixels">Mpix</string>
     <string name="ImageSavedTo">Result image is saved to</string>
+    <string name="SortByNameAsc">Name ascending</string>
+    <string name="SortByNameDesc">Name descending</string>
+    <string name="SortByDateAsc">Sort by date ascending</string>
+    <string name="SortByDateDesc">Sort by date descending</string>
 </resources>

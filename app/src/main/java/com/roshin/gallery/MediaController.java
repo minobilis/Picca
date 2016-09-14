@@ -55,11 +55,18 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Timer;
 
 public class MediaController implements NotificationCenter.NotificationCenterDelegate{
+
+    public static final int SORT_BY_NAME_ASC = 0;
+    public static final int SORT_BY_NAME_DESC = 1;
+    public static final int SORT_BY_DATE_ASC = 2;
+    public static final int SORT_BY_DATE_DESC = 3;
 
     public interface FileDownloadProgressListener {
         void onFailedDownload(String fileName);
@@ -691,10 +698,14 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
                 Integer cameraAlbumId = null;
                 Integer cameraAlbumVideoId = null;
 
+                SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+                String imageSorting = preferences.getString("sortImagesBy", MediaStore.Images.Media.DATE_TAKEN + " DESC");
+                int albumSorting = preferences.getInt("sortAlbumsBy", SORT_BY_DATE_DESC);
+
                 Cursor cursor = null;
                 try {
                     if (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 23 && ApplicationLoader.applicationContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        cursor = MediaStore.Images.Media.query(ApplicationLoader.applicationContext.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionPhotos, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC"); // TODO: 16.08.2016 add more ordering options
+                        cursor = MediaStore.Images.Media.query(ApplicationLoader.applicationContext.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionPhotos, null, null, imageSorting); // TODO: 16.08.2016 add more ordering options
                         if (cursor != null) {
                             int imageIdColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                             int bucketIdColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
@@ -815,6 +826,8 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
                     }
                 }
 
+                sortAlbumsBy(albumsSorted, albumSorting);
+
                 final Integer cameraAlbumIdFinal = cameraAlbumId;
                 final Integer cameraAlbumVideoIdFinal = cameraAlbumVideoId;
                 final AlbumEntry allPhotosAlbumFinal = allPhotosAlbum;
@@ -829,5 +842,44 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         });
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
+    }
+
+    public static void sortAlbumsBy(ArrayList<AlbumEntry> albums, final int sortType) {
+        Comparator comparator = new Comparator<AlbumEntry>() {
+            @Override
+            public int compare(AlbumEntry lhs, AlbumEntry rhs) {
+                switch (sortType){
+                    case SORT_BY_NAME_ASC:
+                        return lhs.bucketName.compareToIgnoreCase(rhs.bucketName);
+
+                    case SORT_BY_NAME_DESC:
+                        return rhs.bucketName.compareToIgnoreCase(lhs.bucketName);
+
+                    case SORT_BY_DATE_ASC:
+                        return getLatestDateInAlbum(lhs) < getLatestDateInAlbum(rhs) ? -1 :
+                                getLatestDateInAlbum(lhs) > getLatestDateInAlbum(rhs) ? 1 :
+                                        0;
+
+                    case SORT_BY_DATE_DESC:
+                        return getLatestDateInAlbum(lhs) > getLatestDateInAlbum(rhs) ? -1 :
+                                getLatestDateInAlbum(lhs) < getLatestDateInAlbum(rhs) ? 1 :
+                                        0;
+                    default:
+                        return 0;
+                }
+            }
+        };
+
+        Collections.sort(albums, comparator);
+    }
+
+    private static long getLatestDateInAlbum(AlbumEntry albumEntry){
+        long result = 0;
+        for (PhotoEntry photoEntry : albumEntry.photos){
+            if (photoEntry.dateTaken > result)
+                result = photoEntry.dateTaken;
+        }
+
+        return result;
     }
 }
