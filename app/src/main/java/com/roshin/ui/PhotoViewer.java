@@ -95,6 +95,7 @@ import com.roshin.ui.Components.SizeNotifierFrameLayoutPhoto;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -894,8 +895,10 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             MediaController.PhotoEntry entry = (MediaController.PhotoEntry) object;
             final String fullPath = entry.path;
             final String filename = fullPath.substring(fullPath.lastIndexOf("/") + 1);
-            final String dateTaken = new SimpleDateFormat("MM/dd/yyyy").format(new Date(entry.dateTaken)); // TODO: 10.09.2016 international date and time formatting
-            final String timeTaken = new SimpleDateFormat("HH:mm").format(new Date(entry.dateTaken));
+            final String dateTaken = LocaleController.formatDateDetails(entry.dateTaken);
+            final String timeTaken = LocaleController.formatTimeDetails(entry.dateTaken);
+
+            LocaleController.formatDate(entry.dateTaken);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;

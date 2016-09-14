@@ -743,6 +743,14 @@ public class LocaleController {
         return "LOC_ERR: formatDate";
     }
 
+    public static String formatDateDetails(long date) {
+        return java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG, getInstance().currentLocale).format(new Date(date));
+    }
+
+    public static String formatTimeDetails(long date) {
+        return java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT, getInstance().currentLocale).format(new Date(date));
+    }
+
     public static String formatDateAudio(long date) {
         try {
             Calendar rightNow = Calendar.getInstance();
