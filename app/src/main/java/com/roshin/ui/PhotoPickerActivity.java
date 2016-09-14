@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -69,6 +70,16 @@ import java.util.concurrent.Executors;
 
 public class PhotoPickerActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, PhotoViewer.PhotoViewerProvider {
 
+    private final static int BACK_BUTTON = -1;
+    private final static int DELETE_FILES_BUTTON = 0;
+    private static final int SORTING_DROPDOWN_MENU = 1;
+    private static final int SORT_BY_NAME_ASC = 2;
+    private static final int SORT_BY_NAME_DESC = 3;
+    private static final int SORT_BY_DATE_ASC = 4;
+    private static final int SORT_BY_DATE_DESC = 5;
+    private static final int EXTRA_MENU = 6;
+    private static final int OPEN_SETTINGS_COMMAND = 7;
+
     public interface PhotoPickerActivityDelegate {
         void selectedPhotosChanged();
 
@@ -81,9 +92,6 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
     private SimpleTextView actionModeSubTextView;
     private ArrayList<View> actionModeViews = new ArrayList<>();
     private NumberTextView selectedPhotosCountTextView;
-
-    private final static int BACK_BUTTON = -1;
-    private final static int DELETE_FILES_BUTTON = 0;
 
     private static final ExecutorService DELETE_SERVICE = Executors.newSingleThreadExecutor();
 
@@ -177,7 +185,16 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
             actionBar.setTitle(selectedAlbum.bucketName);
         }
 
-        actionBar.createMenu();
+        ActionBarMenu menu = actionBar.createMenu();
+
+        ActionBarMenuItem sortMenu = menu.addItem(SORTING_DROPDOWN_MENU, R.drawable.ic_sort_white_24dp);
+        sortMenu.addSubItem(SORT_BY_NAME_ASC, LocaleController.getString("SortByNameAsc", R.string.SortByNameAsc), 0);
+        sortMenu.addSubItem(SORT_BY_NAME_DESC, LocaleController.getString("SortByNameDesc", R.string.SortByNameDesc), 0);
+        sortMenu.addSubItem(SORT_BY_DATE_ASC, LocaleController.getString("SortByDateAsc", R.string.SortByDateAsc), 0);
+        sortMenu.addSubItem(SORT_BY_DATE_DESC, LocaleController.getString("SortByDateDesc", R.string.SortByDateDesc), 0);
+
+        ActionBarMenuItem extendedMenu = menu.addItem(EXTRA_MENU, R.drawable.ic_ab_other);
+        extendedMenu.addSubItem(OPEN_SETTINGS_COMMAND, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings);
 
         final ActionBarMenu actionMode = actionBar.createActionMode();
         selectedPhotosCountTextView = new NumberTextView(actionMode.getContext());
@@ -245,6 +262,9 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
 
         actionModeViews.add(actionMode.addItem(DELETE_FILES_BUTTON, R.drawable.ic_ab_fwd_delete, Theme.ACTION_BAR_MODE_SELECTOR_COLOR, null, AndroidUtilities.dp(54)));
 
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
@@ -258,6 +278,33 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
                         break;
                     case DELETE_FILES_BUTTON:
                         deleteCheckedFiles();
+                        break;
+                    case SORT_BY_NAME_ASC:
+                        editor.putInt("sortImagesBy", MediaController.SORT_BY_NAME_ASC);
+                        editor.apply();
+                        MediaController.sortImagesBy(selectedAlbum.photos, MediaController.SORT_BY_NAME_ASC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_NAME_DESC:
+                        editor.putInt("sortImagesBy", MediaController.SORT_BY_NAME_DESC);
+                        editor.apply();
+                        MediaController.sortImagesBy(selectedAlbum.photos, MediaController.SORT_BY_NAME_DESC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_DATE_ASC:
+                        editor.putInt("sortImagesBy", MediaController.SORT_BY_DATE_ASC);
+                        editor.apply();
+                        MediaController.sortImagesBy(selectedAlbum.photos, MediaController.SORT_BY_DATE_ASC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case SORT_BY_DATE_DESC:
+                        editor.putInt("sortImagesBy", MediaController.SORT_BY_DATE_DESC);
+                        editor.apply();
+                        MediaController.sortImagesBy(selectedAlbum.photos, MediaController.SORT_BY_DATE_DESC);
+                        listAdapter.notifyDataSetChanged();
+                        break;
+                    case OPEN_SETTINGS_COMMAND:
+                        presentFragment(new SettingsActivity());
                         break;
                 }
             }

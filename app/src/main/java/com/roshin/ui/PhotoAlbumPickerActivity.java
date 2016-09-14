@@ -572,6 +572,11 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
                 recentImages = recentGifImages;
             }
         }
+
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+        int imageSorting = preferences.getInt("sortImagesBy", SORT_BY_DATE_DESC);
+        MediaController.sortImagesBy(albumEntry.photos, imageSorting);
+
         PhotoPickerActivity fragment = new PhotoPickerActivity(type, albumEntry, selectedPhotos, selectedWebPhotos, recentImages, singlePhoto, chatActivity);
         fragment.setDelegate(new PhotoPickerActivity.PhotoPickerActivityDelegate() {
             @Override

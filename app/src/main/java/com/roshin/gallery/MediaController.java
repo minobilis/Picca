@@ -699,13 +699,12 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
                 Integer cameraAlbumVideoId = null;
 
                 SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
-                String imageSorting = preferences.getString("sortImagesBy", MediaStore.Images.Media.DATE_TAKEN + " DESC");
                 int albumSorting = preferences.getInt("sortAlbumsBy", SORT_BY_DATE_DESC);
 
                 Cursor cursor = null;
                 try {
                     if (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 23 && ApplicationLoader.applicationContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        cursor = MediaStore.Images.Media.query(ApplicationLoader.applicationContext.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionPhotos, null, null, imageSorting); // TODO: 16.08.2016 add more ordering options
+                        cursor = MediaStore.Images.Media.query(ApplicationLoader.applicationContext.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionPhotos, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
                         if (cursor != null) {
                             int imageIdColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                             int bucketIdColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
@@ -842,6 +841,35 @@ public class MediaController implements NotificationCenter.NotificationCenterDel
         });
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
+    }
+
+    public static void sortImagesBy(ArrayList<PhotoEntry> images, final int sortType) {
+        Comparator comparator = new Comparator<PhotoEntry>() {
+            @Override
+            public int compare(PhotoEntry lhs, PhotoEntry rhs) {
+                switch (sortType){
+                    case SORT_BY_NAME_ASC:
+                        return lhs.path.compareToIgnoreCase(rhs.path);
+
+                    case SORT_BY_NAME_DESC:
+                        return rhs.path.compareToIgnoreCase(lhs.path);
+
+                    case SORT_BY_DATE_ASC:
+                        return lhs.dateTaken < rhs.dateTaken ? -1 :
+                                lhs.dateTaken > rhs.dateTaken ? 1 :
+                                        0;
+
+                    case SORT_BY_DATE_DESC:
+                        return lhs.dateTaken > rhs.dateTaken ? -1 :
+                                lhs.dateTaken < rhs.dateTaken ? 1 :
+                                        0;
+                    default:
+                        return 0;
+                }
+            }
+        };
+
+        Collections.sort(images, comparator);
     }
 
     public static void sortAlbumsBy(ArrayList<AlbumEntry> albums, final int sortType) {
